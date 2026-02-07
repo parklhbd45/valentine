@@ -218,11 +218,17 @@
         function addMessage(text, sender, isLoading = false) { const chatBox = document.getElementById('chat-box'); const div = document.createElement('div'); div.className = `msg msg-${sender}`; div.innerText = text; if(isLoading) div.id = 'loading-' + Date.now(); chatBox.appendChild(div); const clear = document.createElement('div'); clear.style.clear = 'both'; chatBox.appendChild(clear); chatBox.scrollTop = chatBox.scrollHeight; return div.id; }
 
         // ==========================================
-        // 🎮 3D WALKING LOGIC (THREE.JS) 🎮
+        // 🎮 3D WALKING LOGIC (THREE.JS) + HEAD BOBBING 🎮
         // ==========================================
-        let scene, camera, renderer, player;
+        let scene, camera, renderer;
         let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
         let is3DActive = false;
+        
+        // ตัวแปรสำหรับ Head Bobbing (เดินโยกหัว)
+        let walkingTime = 0;
+        const bobSpeed = 8; // ความเร็วในการโยก
+        const bobAmount = 0.05; // ความสูงในการโยก (เมตร)
+        const baseHeight = 1.6; // ระดับสายตาปกติ
 
         function start3DWorld() {
             is3DActive = true;
@@ -230,70 +236,55 @@
             document.getElementById('joystick-ui').style.display = 'flex';
             document.getElementById('instruction-text').style.display = 'block';
 
-            // 1. Setup Scene
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xfff0f5); // สีชมพูอ่อน
-            scene.fog = new THREE.Fog(0xfff0f5, 1, 20); // หมอกจางๆ
+            scene.background = new THREE.Color(0xfff0f5);
+            scene.fog = new THREE.Fog(0xfff0f5, 1, 20);
 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 1.6, 5); // สูง 1.6 เมตร (ระดับสายตา)
+            camera.position.set(0, baseHeight, 5); // เริ่มที่ระดับสายตา
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('world-container').appendChild(renderer.domElement);
 
-            // 2. Add Lights
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
             scene.add(ambientLight);
 
-            // 3. Add Floor (พรมแดง)
             const floorGeo = new THREE.PlaneGeometry(10, 50);
             const floorMat = new THREE.MeshBasicMaterial({ color: 0xffb3c6 });
             const floor = new THREE.Mesh(floorGeo, floorMat);
             floor.rotation.x = -Math.PI / 2;
             scene.add(floor);
 
-            // 4. Load Photos & Create Frames
             const textureLoader = new THREE.TextureLoader();
-            
-            // ฟังก์ชันสร้างกรอบรูป
             function createFrame(imgPath, x, z, rotationY) {
                 textureLoader.load(imgPath, (texture) => {
                     const aspect = texture.image.width / texture.image.height;
-                    const geo = new THREE.BoxGeometry(2, 2/aspect, 0.1); // ปรับขนาดตามรูป
+                    const geo = new THREE.BoxGeometry(2, 2/aspect, 0.1);
                     const mat = new THREE.MeshBasicMaterial({ map: texture });
                     const mesh = new THREE.Mesh(geo, mat);
                     mesh.position.set(x, 1.6, z);
                     mesh.rotation.y = rotationY;
-                    
-                    // กรอบขาว
                     const frameGeo = new THREE.BoxGeometry(2.2, (2/aspect)+0.2, 0.05);
                     const frameMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
                     const frame = new THREE.Mesh(frameGeo, frameMat);
                     frame.position.set(0, 0, -0.05);
                     mesh.add(frame);
-                    
                     scene.add(mesh);
                 });
             }
 
-            // วางรูป 4 รูป (ซ้าย-ขวา สลับกัน)
-            createFrame('photo1.jpg', -2.5, 2, 0.5);  // ซ้าย
-            createFrame('photo2.jpg', 2.5, 0, -0.5);  // ขวา
-            createFrame('photo3.jpg', -2.5, -3, 0.5); // ซ้าย
-            createFrame('photo4.jpg', 2.5, -6, -0.5); // ขวา
+            createFrame('photo1.jpg', -2.5, 2, 0.5);
+            createFrame('photo2.jpg', 2.5, 0, -0.5);
+            createFrame('photo3.jpg', -2.5, -3, 0.5);
+            createFrame('photo4.jpg', 2.5, -6, -0.5);
 
-            // 5. Create "The End" Curtain (เส้นชัย)
             const endGeo = new THREE.BoxGeometry(8, 5, 0.1);
-            const endMat = new THREE.MeshBasicMaterial({ color: 0xa00020 }); // สีแดง
+            const endMat = new THREE.MeshBasicMaterial({ color: 0xa00020 });
             const endWall = new THREE.Mesh(endGeo, endMat);
-            endWall.position.set(0, 2.5, -10); // อยู่ที่สุดทาง
+            endWall.position.set(0, 2.5, -10);
             scene.add(endWall);
 
-            // Text บนม่าน
-            // (Three.js สร้าง text ยาก ข้ามไปใช้ logic ชนกำแพงแทน)
-
-            // 6. Controls
             document.addEventListener('keydown', (e) => {
                 switch(e.code) {
                     case 'ArrowUp': case 'KeyW': moveForward = true; break;
@@ -311,16 +302,13 @@
                 }
             });
 
-            // Mobile Touch Controls
             const btnUp = document.getElementById('btnUp');
             const btnDown = document.getElementById('btnDown');
             const btnLeft = document.getElementById('btnLeft');
             const btnRight = document.getElementById('btnRight');
-
             const handleTouch = (btn, dir, val) => {
                 btn.addEventListener('touchstart', (e) => { e.preventDefault(); dir = true; });
                 btn.addEventListener('touchend', (e) => { e.preventDefault(); dir = false; });
-                // Hacky assignment because primitives are passed by value
                 if(btn.id === 'btnUp') { btn.addEventListener('touchstart', ()=>moveForward=true); btn.addEventListener('touchend', ()=>moveForward=false); }
                 if(btn.id === 'btnDown') { btn.addEventListener('touchstart', ()=>moveBackward=true); btn.addEventListener('touchend', ()=>moveBackward=false); }
                 if(btn.id === 'btnLeft') { btn.addEventListener('touchstart', ()=>moveLeft=true); btn.addEventListener('touchend', ()=>moveLeft=false); }
@@ -335,38 +323,40 @@
             if (!is3DActive) return;
             requestAnimationFrame(animate3D);
 
-            // Movement Logic
             const speed = 0.1;
             const rotSpeed = 0.03;
+            let isMoving = false;
 
-            if (moveForward) camera.translateZ(-speed);
-            if (moveBackward) camera.translateZ(speed);
+            if (moveForward) { camera.translateZ(-speed); isMoving = true; }
+            if (moveBackward) { camera.translateZ(speed); isMoving = true; }
             if (moveLeft) camera.rotateY(rotSpeed);
             if (moveRight) camera.rotateY(-rotSpeed);
             
-            // Lock Height (ไม่ให้บิน)
-            camera.position.y = 1.6;
+            // --- Head Bobbing Logic (ส่วนที่เพิ่มใหม่) ---
+            if (isMoving) {
+                // ถ้าเดินอยู่ ให้เพิ่มเวลาและคำนวณการโยก (ใช้ sin wave)
+                walkingTime += 0.05;
+                camera.position.y = baseHeight + Math.sin(walkingTime * bobSpeed) * bobAmount;
+            } else {
+                // ถ้าหยุดเดิน ให้ค่อยๆ กลับมาระดับเดิม
+                camera.position.y = THREE.MathUtils.lerp(camera.position.y, baseHeight, 0.1);
+            }
+            // -------------------------------------------
 
-            // Check Win Condition (เดินถึงเส้นชัย Z < -8)
             if (camera.position.z < -8) {
                 is3DActive = false;
-                document.getElementById('world-container').style.display = 'none'; // ปิด 3D
+                document.getElementById('world-container').style.display = 'none';
                 document.getElementById('joystick-ui').style.display = 'none';
                 document.getElementById('instruction-text').style.display = 'none';
-                
-                // เข้าหน้า Concert
                 const concertPage = document.getElementById('pageConcert');
                 concertPage.classList.remove('hidden');
                 concertPage.classList.add('fade-in');
-                
-                // เปิดม่าน
                 setTimeout(() => { document.getElementById('curtains').classList.add('curtain-open'); }, 500);
             }
 
             renderer.render(scene, camera);
         }
 
-        // Window Resize Handle
         window.addEventListener('resize', () => {
             if(camera && renderer) {
                 camera.aspect = window.innerWidth / window.innerHeight;
