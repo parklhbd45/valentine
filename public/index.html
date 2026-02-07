@@ -14,7 +14,7 @@
             --secondary: #ffb3c6;
             --bg: #fff0f5;
             --line-color: #06C755;
-            --wood-texture: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* ลายไม้จางๆ */
+            --wood-texture: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
         }
 
         body {
@@ -29,47 +29,20 @@
             align-items: center;
             color: #d63384;
             position: relative;
-            perspective: 1000px; /* หัวใจสำคัญของ 3D */
+            perspective: 1000px;
         }
 
-        /* Background หัวใจลอยฟุ้ง */
-        .heart-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .heart-particle {
-            position: absolute;
-            bottom: -20px;
-            color: rgba(255, 77, 121, 0.3);
-            animation: floatUp 10s linear infinite;
-            font-size: 20px;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
+        /* Background หัวใจ */
+        .heart-bg { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
+        .heart-particle { position: absolute; bottom: -20px; color: rgba(255, 77, 121, 0.3); animation: floatUp 10s linear infinite; font-size: 20px; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
 
         .container {
-            width: 90%;
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(255, 77, 121, 0.3);
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            backdrop-filter: blur(10px);
-            border: 3px solid white;
-            box-sizing: border-box;
-            max-height: 90vh;
-            overflow-y: auto;
-            /* สำหรับหน้า Gallery แบบ 3D */
-            transform-style: preserve-3d;
+            width: 90%; max-width: 500px; background: rgba(255, 255, 255, 0.95); padding: 30px;
+            border-radius: 30px; box-shadow: 0 20px 60px rgba(255, 77, 121, 0.3);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); backdrop-filter: blur(10px);
+            border: 3px solid white; box-sizing: border-box; max-height: 90vh; overflow-y: auto;
+            transform-style: preserve-3d; position: relative; overflow: hidden; /* สำคัญสำหรับม่าน */
         }
         
         h1 { font-size: 2em; margin-bottom: 20px; font-weight: 800; text-shadow: 2px 2px 0px #ffe6eb; }
@@ -77,145 +50,84 @@
         .fade-in { animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
 
-        .btn {
-            padding: 12px 30px; font-size: 1.2em; border: none; border-radius: 50px; cursor: pointer; margin: 10px;
-            font-family: 'Kanit', sans-serif; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s; position: relative; overflow: hidden;
-        }
+        .btn { padding: 12px 30px; font-size: 1.2em; border: none; border-radius: 50px; cursor: pointer; margin: 10px; font-family: 'Kanit'; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; position: relative; }
         .btn-love { background: linear-gradient(45deg, #ff4d79, #ff8fa3); color: white; }
         .btn-love:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 10px 25px rgba(255, 77, 121, 0.4); }
         .btn-no { background-color: #6c757d; color: white; position: absolute; }
 
         /* Chat Styles */
-        #chat-box {
-            height: 300px; overflow-y: auto; border: 2px solid #ffb3c6; padding: 15px; margin-bottom: 15px;
-            border-radius: 15px; background: #fff; text-align: left;
-        }
+        #chat-box { height: 300px; overflow-y: auto; border: 2px solid #ffb3c6; padding: 15px; margin-bottom: 15px; border-radius: 15px; background: #fff; text-align: left; }
         .msg { margin: 5px 0; padding: 10px 15px; border-radius: 20px; display: inline-block; max-width: 80%; font-size: 1em; line-height: 1.4; }
         .msg-user { background: var(--primary); color: white; float: right; clear: both; border-bottom-right-radius: 2px; }
         .msg-bot { background: #f1f3f5; color: #333; float: left; clear: both; border-bottom-left-radius: 2px; }
         .input-group { display: flex; gap: 10px; }
         input { flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit'; }
 
-        /* === ✨ 3D DESK GALLERY STYLES (ส่วนใหม่สุดอลังการ) ✨ === */
-        .desk-surface {
-            background-color: #f9f3f3;
-            background-image: var(--wood-texture); /* เพิ่มลายไม้ */
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: inset 0 0 30px rgba(163, 122, 122, 0.1);
-            margin-bottom: 25px;
-            /* สร้างมิติให้พื้นโต๊ะ */
-            transform: rotateX(5deg);
-            transform-style: preserve-3d;
-        }
-
-        .gallery-grid-3d {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            padding: 10px;
-            transform-style: preserve-3d;
-        }
-
-        .photo-frame-3d {
-            position: relative;
-            aspect-ratio: 1 / 1.1; /* สูงกว่ากว้างนิดหน่อยเหมือนโพลารอยด์ */
-            background: #fff;
-            padding: 12px 12px 35px 12px; /* ด้านล่างเยอะหน่อยไว้เขียนแคปชั่น */
-            
-            /* กรอบสวยๆ */
-            border: 4px solid #e0c097; /* สีไม้โอ๊คอ่อนๆ */
-            border-radius: 4px;
-            outline: 2px solid #fff; /* ขอบขาวตัดอีกชั้น */
-            
-            /* เงาให้ดูว่าวางอยู่บนพื้น */
-            box-shadow: 
-                0 8px 15px rgba(0,0,0,0.15), /* เงาตกกระทบพื้น */
-                inset 0 0 10px rgba(0,0,0,0.05); /* เงาในกรอบ */
-            
-            /* ทำให้เอียงเหมือนตั้งอยู่ (ท่าปกติ) */
-            transform: rotateX(15deg) rotateY(0deg) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เด้งดึ๋งๆ */
-            cursor: pointer;
-        }
-
-        /* จังหวะ Outstanding! (เมื่อเอาเมาส์ไปโดน) */
-        .photo-frame-3d:hover {
-            transform: rotateX(0deg) rotateY(0deg) scale(1.1) translateY(-20px); /* ตั้งตรง + ขยาย + ลอยขึ้น */
-            box-shadow: 0 25px 40px rgba(0,0,0,0.3); /* เงาใหญ่ขึ้นเพราะลอยสูงขึ้น */
-            z-index: 10;
-            border-color: var(--primary); /* เปลี่ยนสีกรอบเป็นสีชมพู */
-        }
-
-        .photo-frame-3d img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: 1px solid #eee;
-        }
-
-        /* แคปชั่นใต้รูป (เหมือนเขียนด้วยมือ) */
-        .photo-caption {
-            position: absolute;
-            bottom: 8px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-family: 'Comic Sans MS', 'cursive', sans-serif; /* ฟอนต์ลายมือ */
-            font-size: 0.9em;
-            color: #777;
-        }
-
-        /* วางกรอบให้ดูธรรมชาติ ไม่ตรงเผง */
+        /* Gallery 3D Styles */
+        .desk-surface { background-color: #f9f3f3; background-image: var(--wood-texture); padding: 25px; border-radius: 20px; box-shadow: inset 0 0 30px rgba(163, 122, 122, 0.1); margin-bottom: 25px; transform: rotateX(5deg); transform-style: preserve-3d; }
+        .gallery-grid-3d { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; padding: 10px; transform-style: preserve-3d; }
+        .photo-frame-3d { position: relative; aspect-ratio: 1 / 1.1; background: #fff; padding: 12px 12px 35px 12px; border: 4px solid #e0c097; border-radius: 4px; outline: 2px solid #fff; box-shadow: 0 8px 15px rgba(0,0,0,0.15), inset 0 0 10px rgba(0,0,0,0.05); transform: rotateX(15deg) rotateY(0deg) scale(0.95); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; }
+        .photo-frame-3d:hover { transform: rotateX(0deg) rotateY(0deg) scale(1.1) translateY(-20px); box-shadow: 0 25px 40px rgba(0,0,0,0.3); z-index: 10; border-color: var(--primary); }
+        .photo-frame-3d img { width: 100%; height: 100%; object-fit: cover; border: 1px solid #eee; }
+        .photo-caption { position: absolute; bottom: 8px; left: 0; width: 100%; text-align: center; font-family: 'Comic Sans MS', 'cursive', sans-serif; font-size: 0.9em; color: #777; }
         .gallery-item-wrapper:nth-child(1) .photo-frame-3d { transform: rotateX(15deg) rotateZ(-3deg) scale(0.95); }
         .gallery-item-wrapper:nth-child(2) .photo-frame-3d { transform: rotateX(15deg) rotateZ(2deg) scale(0.95); }
         .gallery-item-wrapper:nth-child(3) .photo-frame-3d { transform: rotateX(15deg) rotateZ(4deg) scale(0.95); }
         .gallery-item-wrapper:nth-child(4) .photo-frame-3d { transform: rotateX(15deg) rotateZ(-5deg) scale(0.95); }
-        
-        /* แก้ Hover ให้ทับการหมุนเอียง */
-        .gallery-item-wrapper:hover .photo-frame-3d {
-             transform: rotateX(0deg) rotateZ(0deg) scale(1.1) translateY(-20px) !important;
+        .gallery-item-wrapper:hover .photo-frame-3d { transform: rotateX(0deg) rotateZ(0deg) scale(1.1) translateY(-20px) !important; }
+
+        /* === 🎭 CURTAIN STYLES (ส่วนใหม่) 🎭 === */
+        .curtain-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100; pointer-events: none; /* ให้กดทะลุได้ตอนเปิดแล้ว */
+            display: flex;
+        }
+        .curtain-left, .curtain-right {
+            width: 50%; height: 100%;
+            background: #a00020; /* สีแดงกำมะหยี่ */
+            background-image: repeating-linear-gradient(90deg, #a00020 0px, #800010 20px, #a00020 40px);
+            box-shadow: inset -5px 0 10px rgba(0,0,0,0.5);
+            transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1); /* เปิดแบบนุ่มนวล */
+            position: relative;
+        }
+        /* เพิ่มพู่ห้อยสวยๆ */
+        .curtain-left::after, .curtain-right::after {
+            content: ''; position: absolute; bottom: 20%; width: 20px; height: 100px;
+            background: gold; border-radius: 10px; box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+        .curtain-left::after { right: 10px; }
+        .curtain-right::after { left: 10px; }
+
+        .curtain-open .curtain-left { transform: translateX(-100%); }
+        .curtain-open .curtain-right { transform: translateX(100%); }
+
+        /* กรอบ Youtube */
+        .video-frame {
+            border: 8px solid #333; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%; aspect-ratio: 16 / 9;
+            background: #000;
+            margin-bottom: 20px;
         }
 
+        /* Photo Page 3 */
+        img.my-photo { width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 6px solid white; box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3); margin-bottom: 20px; animation: heartbeat 1.5s infinite; }
+        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); } 45% { transform: scale(1.05); } 60% { transform: scale(1); } }
 
-        /* Photo Page 3 (รูปเดียว) */
-        img.my-photo {
-            width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 6px solid white;
-            box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3); margin-bottom: 20px; animation: heartbeat 1.5s infinite;
-        }
-        @keyframes heartbeat {
-            0% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); }
-            45% { transform: scale(1.05); } 60% { transform: scale(1); }
-        }
-
-        /* Gift Boxes & Voucher (เหมือนเดิม) */
+        /* Gift & Voucher */
         .gift-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
-        .gift-box {
-            width: 80px; height: 80px; background: linear-gradient(135deg, #ff4d79, #ff0040); color: white; display: flex;
-            justify-content: center; align-items: center; border-radius: 15px; font-size: 2.5em; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3); transition: all 0.3s; position: relative;
-        }
+        .gift-box { width: 80px; height: 80px; background: linear-gradient(135deg, #ff4d79, #ff0040); color: white; display: flex; justify-content: center; align-items: center; border-radius: 15px; font-size: 2.5em; cursor: pointer; box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3); transition: all 0.3s; position: relative; }
         .gift-box:hover { transform: scale(1.1) rotate(5deg); }
         .gift-box.shaking { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
-
-        .voucher-card {
-            background: linear-gradient(135deg, #fff, #fff0f5); border: 3px dashed var(--primary); border-radius: 20px;
-            padding: 20px; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative;
-        }
-        .voucher-card::before, .voucher-card::after {
-            content: ''; position: absolute; height: 30px; width: 30px; background-color: var(--bg); border-radius: 50%; top: 50%; transform: translateY(-50%);
-        }
+        .voucher-card { background: linear-gradient(135deg, #fff, #fff0f5); border: 3px dashed var(--primary); border-radius: 20px; padding: 20px; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
+        .voucher-card::before, .voucher-card::after { content: ''; position: absolute; height: 30px; width: 30px; background-color: var(--bg); border-radius: 50%; top: 50%; transform: translateY(-50%); }
         .voucher-card::before { left: -18px; box-shadow: inset -3px 0 0 var(--primary); }
         .voucher-card::after { right: -18px; box-shadow: inset 3px 0 0 var(--primary); }
         .voucher-title { font-size: 1.5em; font-weight: 800; color: var(--primary); margin: 0; }
         .voucher-prize { font-size: 2em; font-weight: 800; color: #d63384; margin: 15px 0; text-shadow: 1px 1px 0px white; }
         .voucher-details { font-size: 0.9em; color: #888; }
-        .btn-share-line {
-            background-color: var(--line-color); color: white; width: 100%; margin: 20px 0 0 0; display: flex;
-            justify-content: center; align-items: center; gap: 10px; text-decoration: none;
-        }
+        .btn-share-line { background-color: var(--line-color); color: white; width: 100%; margin: 20px 0 0 0; display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none; }
         .btn-share-line:hover { background-color: #05b34c; transform: scale(1.05); }
 
     </style>
@@ -246,43 +158,40 @@
         <p style="font-size: 0.8em; color: #aaa; margin-top: 10px;">เหลืออีก <span id="chatCount" style="font-weight:bold; color:var(--primary);">5</span> ครั้ง</p>
     </div>
 
-    <div id="pageGallery" class="container hidden" style="perspective: none;"> <h2>โต๊ะทำงานแห่งความทรงจำ 📸</h2>
+    <div id="pageGallery" class="container hidden" style="perspective: none;">
+        <h2>โต๊ะทำงานแห่งความทรงจำ 📸</h2>
         <p style="color: #ff8fa3; margin-bottom: 20px;">(ลองเอานิ้วจิ้มที่รูปดูสิ!)</p>
-        
-        <div class="desk-surface"> <div class="gallery-grid-3d">
-                
-                <div class="gallery-item-wrapper">
-                    <div class="photo-frame-3d">
-                        <img src="photo1.jpg" alt="Memory 1">
-                        <div class="photo-caption">วันแรกที่เจอกัน ❤️</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-wrapper">
-                    <div class="photo-frame-3d">
-                        <img src="photo2.jpg" alt="Memory 2">
-                        <div class="photo-caption">ไปเที่ยวด้วยกัน ✈️</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-wrapper">
-                    <div class="photo-frame-3d">
-                        <img src="photo3.jpg" alt="Memory 3">
-                        <div class="photo-caption">กินแหลก! 🍜</div>
-                    </div>
-                </div>
-
-                <div class="gallery-item-wrapper">
-                    <div class="photo-frame-3d">
-                        <img src="photo4.jpg" alt="Memory 4">
-                        <div class="photo-caption">รักนะเจ้าอ้วน 🐷</div>
-                    </div>
-                </div>
-
+        <div class="desk-surface">
+            <div class="gallery-grid-3d">
+                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo1.jpg"><div class="photo-caption">วันแรกที่เจอกัน ❤️</div></div></div>
+                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo2.jpg"><div class="photo-caption">ไปเที่ยวด้วยกัน ✈️</div></div></div>
+                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo3.jpg"><div class="photo-caption">กินแหลก! 🍜</div></div></div>
+                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo4.jpg"><div class="photo-caption">รักนะเจ้าอ้วน 🐷</div></div></div>
             </div>
         </div>
+        <button class="btn btn-love" onclick="goToConcert()">ไปดูอะไรพิเศษ... 🎸</button>
+    </div>
 
-        <button class="btn btn-love" onclick="goToLovePage()">ไปต่อ... ❤️</button>
+    <div id="pageConcert" class="container hidden">
+        <div class="curtain-container" id="curtains">
+            <div class="curtain-left"></div>
+            <div class="curtain-right"></div>
+        </div>
+
+        <h2>คอนเสิร์ตส่วนตัว 🎶</h2>
+        <p style="color: #ff8fa3;">เพลงนี้เค้าตั้งใจเล่นให้ตะเองนะ</p>
+        
+        <div class="video-frame">
+            <iframe id="youtubeVideo" width="100%" height="100%" 
+                src="https://www.youtube.com/embed/TqN5YKD3dgw?enablejsapi=1" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <p style="font-size: 0.9em; margin-top: 10px;">(ถ้าคลิปไม่เล่น กด Play เลยจ้า)</p>
+        <button class="btn btn-love" onclick="goToLovePage()">ฟังจบแล้วไปต่อ ❤️</button>
     </div>
 
     <div id="page3" class="container hidden">
@@ -296,175 +205,63 @@
     <div id="page4" class="container hidden">
         <h1 id="giftTitle">เลือกของขวัญ 1 กล่อง! 🎁</h1>
         <p id="giftSubtitle">ข้างในมีแต่ของอร่อยนะบอกเลย</p>
-        
         <div class="gift-container">
             <div class="gift-box" onclick="openGift(this)">?</div>
             <div class="gift-box" onclick="openGift(this)">?</div>
             <div class="gift-box" onclick="openGift(this)">?</div>
         </div>
-
         <div id="voucherCard" class="voucher-card hidden fade-in">
             <h3 class="voucher-title">💖 Valentine Voucher 💖</h3>
             <p style="margin: 10px 0;">คูปองนี้อนุญาตให้คุณโอเกะสั่ง...</p>
-            
             <div id="voucherPrizeResult" class="voucher-prize"></div>
-            
             <div class="voucher-details">
                 <p>ผู้ใช้งาน: คุณโอเกะ (คนสวย)</p>
                 <p>ผู้อนุมัติ: ปาร์คกี้ (คนหล่อ)</p>
                 <p>หมดอายุ: <span id="voucherDate"></span> (วันนี้เท่านั้น!)</p>
             </div>
-
             <button class="btn btn-share-line" onclick="shareToLine()">
-                <i class="fab fa-line" style="font-size: 1.5em;"></i>
-                กดส่งให้ปาร์คกี้ดูใน LINE!
+                <i class="fab fa-line" style="font-size: 1.5em;"></i> กดส่งให้ปาร์คกี้ดูใน LINE!
             </button>
         </div>
     </div>
 
     <script>
-        // --- 1. Background ---
-        function createHearts() {
-            const bg = document.getElementById('heartBg');
-            const symbols = ['❤️', '💖', '💕', '🥰', '🌹'];
-            for(let i=0; i<30; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart-particle';
-                heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                heart.style.animationDelay = Math.random() * 5 + 's';
-                bg.appendChild(heart);
-            }
-        }
+        function createHearts() { const bg = document.getElementById('heartBg'); const symbols = ['❤️', '💖', '💕', '🥰', '🌹']; for(let i=0; i<30; i++) { const heart = document.createElement('div'); heart.className = 'heart-particle'; heart.innerText = symbols[Math.floor(Math.random() * symbols.length)]; heart.style.left = Math.random() * 100 + '%'; heart.style.animationDuration = (Math.random() * 5 + 5) + 's'; heart.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(heart); } }
         createHearts();
 
-        // --- 2. Page 1 Logic ---
-        function runAway() {
-            const btn = document.getElementById('btnNo');
-            const container = document.getElementById('page1');
-            const x = Math.random() * (container.offsetWidth - 100);
-            const y = Math.random() * (container.offsetHeight - 50);
-            const texts = ["แน่ใจหรอ?", "มือลั่นป่าว?", "กดไม่ได้หรอก", "รักเค้าเถอะ", "ฮั่นแน่!"];
-            btn.innerText = texts[Math.floor(Math.random() * texts.length)];
-            btn.style.left = `${x}px`;
-            btn.style.top = `${y}px`;
-        }
+        function runAway() { const btn = document.getElementById('btnNo'); const container = document.getElementById('page1'); const x = Math.random() * (container.offsetWidth - 100); const y = Math.random() * (container.offsetHeight - 50); const texts = ["แน่ใจหรอ?", "มือลั่นป่าว?", "กดไม่ได้หรอก", "รักเค้าเถอะ", "ฮั่นแน่!"]; btn.innerText = texts[Math.floor(Math.random() * texts.length)]; btn.style.left = `${x}px`; btn.style.top = `${y}px`; }
+        function handleLove() { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); setTimeout(() => { switchPage('page1', 'page2'); }, 1000); }
+        function switchPage(fromId, toId) { document.getElementById(fromId).classList.add('hidden'); const toPage = document.getElementById(toId); toPage.classList.remove('hidden'); toPage.classList.add('fade-in'); }
 
-        function handleLove() {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            setTimeout(() => { switchPage('page1', 'page2'); }, 1000);
-        }
-
-        function switchPage(fromId, toId) {
-            document.getElementById(fromId).classList.add('hidden');
-            const toPage = document.getElementById(toId);
-            toPage.classList.remove('hidden');
-            toPage.classList.add('fade-in');
-        }
-
-        // --- 3. Chat Logic ---
-        let chatCount = 5;
-        let chatHistory = [];
+        let chatCount = 5; let chatHistory = [];
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
-
         async function sendMessage() {
-            const input = document.getElementById('userMsg');
-            const msg = input.value.trim();
-            if (!msg) return;
-            addMessage(msg, 'user');
-            input.value = '';
-            const loadingId = addMessage("กำลังพิมพ์...", 'bot', true);
-            try {
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ message: msg, history: chatHistory })
-                });
-                const data = await res.json();
-                document.getElementById(loadingId).remove();
-                addMessage(data.reply, 'bot');
-                chatHistory.push({ role: "user", content: msg });
-                chatHistory.push({ role: "assistant", content: data.reply });
-            } catch (err) {
-                document.getElementById(loadingId).remove();
-                addMessage("ระบบเหนื่อย... แต่เค้ารักตะเองนะ", 'bot');
-            }
-            chatCount--;
-            document.getElementById('chatCount').innerText = chatCount;
+            const input = document.getElementById('userMsg'); const msg = input.value.trim(); if (!msg) return;
+            addMessage(msg, 'user'); input.value = ''; const loadingId = addMessage("กำลังพิมพ์...", 'bot', true);
+            try { const res = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ message: msg, history: chatHistory }) }); const data = await res.json(); document.getElementById(loadingId).remove(); addMessage(data.reply, 'bot'); chatHistory.push({ role: "user", content: msg }); chatHistory.push({ role: "assistant", content: data.reply }); } catch (err) { document.getElementById(loadingId).remove(); addMessage("ระบบเหนื่อย... แต่เค้ารักตะเองนะ", 'bot'); }
+            chatCount--; document.getElementById('chatCount').innerText = chatCount;
+            if (chatCount <= 0) { setTimeout(() => { switchPage('page2', 'pageGallery'); confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } }); }, 2000); }
+        }
+        function addMessage(text, sender, isLoading = false) { const chatBox = document.getElementById('chat-box'); const div = document.createElement('div'); div.className = `msg msg-${sender}`; div.innerText = text; if(isLoading) div.id = 'loading-' + Date.now(); chatBox.appendChild(div); const clear = document.createElement('div'); clear.style.clear = 'both'; chatBox.appendChild(clear); chatBox.scrollTop = chatBox.scrollHeight; return div.id; }
+
+        // --- Logic: Gallery -> Concert ---
+        function goToConcert() {
+            switchPage('pageGallery', 'pageConcert');
             
-            // เมื่อคุยครบ 5 ครั้ง -> ไปหน้า Gallery 3D
-            if (chatCount <= 0) {
-                setTimeout(() => {
-                    switchPage('page2', 'pageGallery');
-                    confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
-                }, 2000);
-            }
+            // รอ 0.5 วิ แล้วสั่งเปิดม่าน!
+            setTimeout(() => {
+                document.getElementById('curtains').classList.add('curtain-open');
+                // หมายเหตุ: Auto-play อาจไม่ติดในบาง Browser (ต้องกด Play เอง)
+            }, 500);
         }
 
-        function addMessage(text, sender, isLoading = false) {
-            const chatBox = document.getElementById('chat-box');
-            const div = document.createElement('div');
-            div.className = `msg msg-${sender}`;
-            div.innerText = text;
-            if(isLoading) div.id = 'loading-' + Date.now();
-            chatBox.appendChild(div);
-            const clear = document.createElement('div');
-            clear.style.clear = 'both';
-            chatBox.appendChild(clear);
-            chatBox.scrollTop = chatBox.scrollHeight;
-            return div.id;
-        }
-
-        // --- New Function: Gallery to Love Page ---
-        function goToLovePage() {
-            switchPage('pageGallery', 'page3');
-        }
-
+        function goToLovePage() { switchPage('pageConcert', 'page3'); }
         function goToGifts() { switchPage('page3', 'page4'); }
 
-        // --- 5. Gift Logic ---
         let finalPrize = ""; 
-
-        function openGift(element) {
-            if(finalPrize !== "") return; 
-
-            element.classList.add('shaking');
-
-            setTimeout(() => {
-                element.classList.remove('shaking');
-                const prizes = ['หมูกระทะ 🐷', 'ชาบู 🍲', 'อาหารญี่ปุ่น 🍣', 'MK สุกี้ 🍲', 'BBQ Plaza 🐲'];
-                finalPrize = prizes[Math.floor(Math.random() * prizes.length)];
-                
-                document.querySelector('.gift-container').style.display = 'none';
-                document.getElementById('giftSubtitle').style.display = 'none';
-                document.getElementById('giftTitle').innerText = "ยินดีด้วย! คุณได้รับ...";
-
-                const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-                document.getElementById('voucherPrizeResult').innerText = finalPrize;
-                document.getElementById('voucherDate').innerText = today;
-
-                document.getElementById('voucherCard').classList.remove('hidden');
-                launchBigConfetti();
-            }, 800);
-        }
-
-        function shareToLine() {
-            const shareText = `💖 Voucher Alert! 💖\n\nคุณโอเกะจับฉลากได้กิน "${finalPrize}"\n\nปาร์คกี้ต้องพาไปกินภายในวันนี้ ห้ามเบี้ยว!\n\n(จาก Valentines App)`;
-            const encodedText = encodeURIComponent(shareText);
-            const lineUrl = `https://line.me/R/msg/text/?${encodedText}`;
-            window.open(lineUrl, '_blank');
-        }
-
-        function launchBigConfetti() {
-            var duration = 3 * 1000;
-            var end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-        }
+        function openGift(element) { if(finalPrize !== "") return; element.classList.add('shaking'); setTimeout(() => { element.classList.remove('shaking'); const prizes = ['หมูกระทะ 🐷', 'ชาบู 🍲', 'อาหารญี่ปุ่น 🍣', 'MK สุกี้ 🍲', 'BBQ Plaza 🐲']; finalPrize = prizes[Math.floor(Math.random() * prizes.length)]; document.querySelector('.gift-container').style.display = 'none'; document.getElementById('giftSubtitle').style.display = 'none'; document.getElementById('giftTitle').innerText = "ยินดีด้วย! คุณได้รับ..."; const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }); document.getElementById('voucherPrizeResult').innerText = finalPrize; document.getElementById('voucherDate').innerText = today; document.getElementById('voucherCard').classList.remove('hidden'); launchBigConfetti(); }, 800); }
+        function shareToLine() { const shareText = `💖 Voucher Alert! 💖\n\nคุณโอเกะจับฉลากได้กิน "${finalPrize}"\n\nปาร์คกี้ต้องพาไปกินภายในวันนี้ ห้ามเบี้ยว!\n\n(จาก Valentines App)`; const encodedText = encodeURIComponent(shareText); const lineUrl = `https://line.me/R/msg/text/?${encodedText}`; window.open(lineUrl, '_blank'); }
+        function launchBigConfetti() { var duration = 3 * 1000; var end = Date.now() + duration; (function frame() { confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } }); confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } }); if (Date.now() < end) requestAnimationFrame(frame); }()); }
     </script>
 </body>
 </html>
