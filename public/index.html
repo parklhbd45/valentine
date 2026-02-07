@@ -14,6 +14,7 @@
             --secondary: #ffb3c6;
             --bg: #fff0f5;
             --line-color: #06C755;
+            --wood-texture: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* ลายไม้จางๆ */
         }
 
         body {
@@ -28,6 +29,7 @@
             align-items: center;
             color: #d63384;
             position: relative;
+            perspective: 1000px; /* หัวใจสำคัญของ 3D */
         }
 
         /* Background หัวใจลอยฟุ้ง */
@@ -64,191 +66,155 @@
             backdrop-filter: blur(10px);
             border: 3px solid white;
             box-sizing: border-box;
-            max-height: 90vh; /* กันทะลุจอ */
-            overflow-y: auto; /* ให้เลื่อนได้ถ้ารูปเยอะ */
+            max-height: 90vh;
+            overflow-y: auto;
+            /* สำหรับหน้า Gallery แบบ 3D */
+            transform-style: preserve-3d;
         }
         
-        h1 { 
-            font-size: 2em; 
-            margin-bottom: 20px; 
-            font-weight: 800;
-            text-shadow: 2px 2px 0px #ffe6eb;
-        }
-        
-        .hidden { 
-            display: none !important; 
-            opacity: 0;
-        }
-        
-        .fade-in {
-            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
+        h1 { font-size: 2em; margin-bottom: 20px; font-weight: 800; text-shadow: 2px 2px 0px #ffe6eb; }
+        .hidden { display: none !important; opacity: 0; }
+        .fade-in { animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
 
         .btn {
-            padding: 12px 30px;
-            font-size: 1.2em;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 10px;
-            font-family: 'Kanit', sans-serif;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            padding: 12px 30px; font-size: 1.2em; border: none; border-radius: 50px; cursor: pointer; margin: 10px;
+            font-family: 'Kanit', sans-serif; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s; position: relative; overflow: hidden;
         }
-        .btn-love { 
-            background: linear-gradient(45deg, #ff4d79, #ff8fa3); 
-            color: white; 
-        }
-        .btn-love:hover {
-            transform: scale(1.1) translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 77, 121, 0.4);
-        }
-        .btn-no { 
-            background-color: #6c757d; 
-            color: white; 
-            position: absolute; 
-        }
+        .btn-love { background: linear-gradient(45deg, #ff4d79, #ff8fa3); color: white; }
+        .btn-love:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 10px 25px rgba(255, 77, 121, 0.4); }
+        .btn-no { background-color: #6c757d; color: white; position: absolute; }
 
         /* Chat Styles */
         #chat-box {
-            height: 300px;
-            overflow-y: auto;
-            border: 2px solid #ffb3c6;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 15px;
-            background: #fff;
-            text-align: left;
+            height: 300px; overflow-y: auto; border: 2px solid #ffb3c6; padding: 15px; margin-bottom: 15px;
+            border-radius: 15px; background: #fff; text-align: left;
         }
         .msg { margin: 5px 0; padding: 10px 15px; border-radius: 20px; display: inline-block; max-width: 80%; font-size: 1em; line-height: 1.4; }
         .msg-user { background: var(--primary); color: white; float: right; clear: both; border-bottom-right-radius: 2px; }
         .msg-bot { background: #f1f3f5; color: #333; float: left; clear: both; border-bottom-left-radius: 2px; }
         .input-group { display: flex; gap: 10px; }
-        input { 
-            flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit';
+        input { flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit'; }
+
+        /* === ✨ 3D DESK GALLERY STYLES (ส่วนใหม่สุดอลังการ) ✨ === */
+        .desk-surface {
+            background-color: #f9f3f3;
+            background-image: var(--wood-texture); /* เพิ่มลายไม้ */
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: inset 0 0 30px rgba(163, 122, 122, 0.1);
+            margin-bottom: 25px;
+            /* สร้างมิติให้พื้นโต๊ะ */
+            transform: rotateX(5deg);
+            transform-style: preserve-3d;
         }
 
-        /* === GALLERY STYLES (ส่วนใหม่) === */
-        .gallery-grid {
+        .gallery-grid-3d {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* แบ่ง 2 คอลัมน์ */
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            padding: 10px;
+            transform-style: preserve-3d;
         }
-        .gallery-item {
+
+        .photo-frame-3d {
             position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 4px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            aspect-ratio: 1 / 1; /* ให้เป็นสี่เหลี่ยมจัตุรัส */
-            transition: transform 0.3s;
+            aspect-ratio: 1 / 1.1; /* สูงกว่ากว้างนิดหน่อยเหมือนโพลารอยด์ */
+            background: #fff;
+            padding: 12px 12px 35px 12px; /* ด้านล่างเยอะหน่อยไว้เขียนแคปชั่น */
+            
+            /* กรอบสวยๆ */
+            border: 4px solid #e0c097; /* สีไม้โอ๊คอ่อนๆ */
+            border-radius: 4px;
+            outline: 2px solid #fff; /* ขอบขาวตัดอีกชั้น */
+            
+            /* เงาให้ดูว่าวางอยู่บนพื้น */
+            box-shadow: 
+                0 8px 15px rgba(0,0,0,0.15), /* เงาตกกระทบพื้น */
+                inset 0 0 10px rgba(0,0,0,0.05); /* เงาในกรอบ */
+            
+            /* ทำให้เอียงเหมือนตั้งอยู่ (ท่าปกติ) */
+            transform: rotateX(15deg) rotateY(0deg) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เด้งดึ๋งๆ */
+            cursor: pointer;
         }
-        .gallery-item:hover {
-            transform: scale(1.05) rotate(2deg);
+
+        /* จังหวะ Outstanding! (เมื่อเอาเมาส์ไปโดน) */
+        .photo-frame-3d:hover {
+            transform: rotateX(0deg) rotateY(0deg) scale(1.1) translateY(-20px); /* ตั้งตรง + ขยาย + ลอยขึ้น */
+            box-shadow: 0 25px 40px rgba(0,0,0,0.3); /* เงาใหญ่ขึ้นเพราะลอยสูงขึ้น */
             z-index: 10;
+            border-color: var(--primary); /* เปลี่ยนสีกรอบเป็นสีชมพู */
         }
-        .gallery-item img {
+
+        .photo-frame-3d img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border: 1px solid #eee;
         }
-        /* ตกแต่งกรอบรูปให้น่ารักขึ้น */
-        .gallery-item:nth-child(1) { transform: rotate(-3deg); }
-        .gallery-item:nth-child(2) { transform: rotate(3deg); }
-        .gallery-item:nth-child(3) { transform: rotate(2deg); }
-        .gallery-item:nth-child(4) { transform: rotate(-2deg); }
+
+        /* แคปชั่นใต้รูป (เหมือนเขียนด้วยมือ) */
+        .photo-caption {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Comic Sans MS', 'cursive', sans-serif; /* ฟอนต์ลายมือ */
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        /* วางกรอบให้ดูธรรมชาติ ไม่ตรงเผง */
+        .gallery-item-wrapper:nth-child(1) .photo-frame-3d { transform: rotateX(15deg) rotateZ(-3deg) scale(0.95); }
+        .gallery-item-wrapper:nth-child(2) .photo-frame-3d { transform: rotateX(15deg) rotateZ(2deg) scale(0.95); }
+        .gallery-item-wrapper:nth-child(3) .photo-frame-3d { transform: rotateX(15deg) rotateZ(4deg) scale(0.95); }
+        .gallery-item-wrapper:nth-child(4) .photo-frame-3d { transform: rotateX(15deg) rotateZ(-5deg) scale(0.95); }
+        
+        /* แก้ Hover ให้ทับการหมุนเอียง */
+        .gallery-item-wrapper:hover .photo-frame-3d {
+             transform: rotateX(0deg) rotateZ(0deg) scale(1.1) translateY(-20px) !important;
+        }
 
 
-        /* Photo Slideshow Styles (หน้าสุดท้าย) */
+        /* Photo Page 3 (รูปเดียว) */
         img.my-photo {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 6px solid white;
-            box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3);
-            margin-bottom: 20px;
-            animation: heartbeat 1.5s infinite;
+            width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 6px solid white;
+            box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3); margin-bottom: 20px; animation: heartbeat 1.5s infinite;
         }
         @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.05); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.05); }
-            60% { transform: scale(1); }
+            0% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); }
+            45% { transform: scale(1.05); } 60% { transform: scale(1); }
         }
 
-        /* Gift Boxes */
+        /* Gift Boxes & Voucher (เหมือนเดิม) */
         .gift-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
         .gift-box {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #ff4d79, #ff0040);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 15px;
-            font-size: 2.5em;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3);
-            transition: all 0.3s;
-            position: relative;
+            width: 80px; height: 80px; background: linear-gradient(135deg, #ff4d79, #ff0040); color: white; display: flex;
+            justify-content: center; align-items: center; border-radius: 15px; font-size: 2.5em; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3); transition: all 0.3s; position: relative;
         }
         .gift-box:hover { transform: scale(1.1) rotate(5deg); }
         .gift-box.shaking { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
 
-        /* Voucher Styles */
         .voucher-card {
-            background: linear-gradient(135deg, #fff, #fff0f5);
-            border: 3px dashed var(--primary);
-            border-radius: 20px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative;
+            background: linear-gradient(135deg, #fff, #fff0f5); border: 3px dashed var(--primary); border-radius: 20px;
+            padding: 20px; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative;
         }
         .voucher-card::before, .voucher-card::after {
-            content: '';
-            position: absolute;
-            height: 30px;
-            width: 30px;
-            background-color: var(--bg);
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
+            content: ''; position: absolute; height: 30px; width: 30px; background-color: var(--bg); border-radius: 50%; top: 50%; transform: translateY(-50%);
         }
         .voucher-card::before { left: -18px; box-shadow: inset -3px 0 0 var(--primary); }
         .voucher-card::after { right: -18px; box-shadow: inset 3px 0 0 var(--primary); }
-
         .voucher-title { font-size: 1.5em; font-weight: 800; color: var(--primary); margin: 0; }
         .voucher-prize { font-size: 2em; font-weight: 800; color: #d63384; margin: 15px 0; text-shadow: 1px 1px 0px white; }
         .voucher-details { font-size: 0.9em; color: #888; }
         .btn-share-line {
-            background-color: var(--line-color);
-            color: white;
-            width: 100%;
-            margin: 20px 0 0 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
+            background-color: var(--line-color); color: white; width: 100%; margin: 20px 0 0 0; display: flex;
+            justify-content: center; align-items: center; gap: 10px; text-decoration: none;
         }
         .btn-share-line:hover { background-color: #05b34c; transform: scale(1.05); }
 
@@ -280,15 +246,40 @@
         <p style="font-size: 0.8em; color: #aaa; margin-top: 10px;">เหลืออีก <span id="chatCount" style="font-weight:bold; color:var(--primary);">5</span> ครั้ง</p>
     </div>
 
-    <div id="pageGallery" class="container hidden">
-        <h2>ความทรงจำของเรา 📸</h2>
-        <p style="color: #ff8fa3; margin-bottom: 20px;">จำรูปพวกนี้ได้มั้ยตะเอง?</p>
+    <div id="pageGallery" class="container hidden" style="perspective: none;"> <h2>โต๊ะทำงานแห่งความทรงจำ 📸</h2>
+        <p style="color: #ff8fa3; margin-bottom: 20px;">(ลองเอานิ้วจิ้มที่รูปดูสิ!)</p>
         
-        <div class="gallery-grid">
-            <div class="gallery-item"><img src="photo1.jpg" alt="Photo 1"></div>
-            <div class="gallery-item"><img src="photo2.jpg" alt="Photo 2"></div>
-            <div class="gallery-item"><img src="photo3.jpg" alt="Photo 3"></div>
-            <div class="gallery-item"><img src="photo4.jpg" alt="Photo 4"></div>
+        <div class="desk-surface"> <div class="gallery-grid-3d">
+                
+                <div class="gallery-item-wrapper">
+                    <div class="photo-frame-3d">
+                        <img src="photo1.jpg" alt="Memory 1">
+                        <div class="photo-caption">วันแรกที่เจอกัน ❤️</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item-wrapper">
+                    <div class="photo-frame-3d">
+                        <img src="photo2.jpg" alt="Memory 2">
+                        <div class="photo-caption">ไปเที่ยวด้วยกัน ✈️</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item-wrapper">
+                    <div class="photo-frame-3d">
+                        <img src="photo3.jpg" alt="Memory 3">
+                        <div class="photo-caption">กินแหลก! 🍜</div>
+                    </div>
+                </div>
+
+                <div class="gallery-item-wrapper">
+                    <div class="photo-frame-3d">
+                        <img src="photo4.jpg" alt="Memory 4">
+                        <div class="photo-caption">รักนะเจ้าอ้วน 🐷</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <button class="btn btn-love" onclick="goToLovePage()">ไปต่อ... ❤️</button>
@@ -402,10 +393,10 @@
             chatCount--;
             document.getElementById('chatCount').innerText = chatCount;
             
-            // เมื่อคุยครบ 5 ครั้ง -> ไปหน้า Gallery (ของใหม่!)
+            // เมื่อคุยครบ 5 ครั้ง -> ไปหน้า Gallery 3D
             if (chatCount <= 0) {
                 setTimeout(() => {
-                    switchPage('page2', 'pageGallery'); // เปลี่ยนเส้นทางไปหน้า Gallery
+                    switchPage('page2', 'pageGallery');
                     confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
                 }, 2000);
             }
