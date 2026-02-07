@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Lovely Valentine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #ff4d79;
+            --secondary: #ffb3c6;
+            --bg: #fff0f5;
+            --line-color: #06C755;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--bg);
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #d63384;
+            position: relative;
+        }
+
+        /* Background หัวใจลอยฟุ้ง */
+        .heart-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .heart-particle {
+            position: absolute;
+            bottom: -20px;
+            color: rgba(255, 77, 121, 0.3);
+            animation: floatUp 10s linear infinite;
+            font-size: 20px;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 77, 121, 0.3);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            backdrop-filter: blur(10px);
+            border: 3px solid white;
+            box-sizing: border-box;
+        }
+        
+        h1 { 
+            font-size: 2em; 
+            margin-bottom: 20px; 
+            font-weight: 800;
+            text-shadow: 2px 2px 0px #ffe6eb;
+        }
+        
+        .hidden { 
+            display: none !important; 
+            opacity: 0;
+        }
+        
+        .fade-in {
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ปุ่มเวอร์ๆ */
+        .btn {
+            padding: 12px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            font-family: 'Kanit', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-love { 
+            background: linear-gradient(45deg, #ff4d79, #ff8fa3); 
+            color: white; 
+        }
+        .btn-love:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 121, 0.4);
+        }
+        .btn-no { 
+            background-color: #6c757d; 
+            color: white; 
+            position: absolute; 
+        }
+
+        /* Chat Styles */
+        #chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 2px solid #ffb3c6;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            background: #fff;
+            text-align: left;
+        }
+        .msg { margin: 5px 0; padding: 10px 15px; border-radius: 20px; display: inline-block; max-width: 80%; font-size: 1em; line-height: 1.4; }
+        .msg-user { background: var(--primary); color: white; float: right; clear: both; border-bottom-right-radius: 2px; }
+        .msg-bot { background: #f1f3f5; color: #333; float: left; clear: both; border-bottom-left-radius: 2px; }
+        .input-group { display: flex; gap: 10px; }
+        input { 
+            flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit';
+        }
+
+        /* Photo Page */
+        img.my-photo {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 6px solid white;
+            box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3);
+            margin-bottom: 20px;
+            animation: heartbeat 1.5s infinite;
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.05); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.05); }
+            60% { transform: scale(1); }
+        }
+
+        /* Gift Boxes */
+        .gift-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .gift-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff4d79, #ff0040);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            font-size: 2.5em;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3);
+            transition: all 0.3s;
+            position: relative;
+        }
+        .gift-box:hover { transform: scale(1.1) rotate(5deg); }
+        .gift-box.shaking { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* === ส่วนของ Voucher ที่เพิ่มเข้ามา === */
+        .voucher-card {
+            background: linear-gradient(135deg, #fff, #fff0f5);
+            border: 3px dashed var(--primary);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .voucher-card::before, .voucher-card::after {
+            content: '';
+            position: absolute;
+            height: 30px;
+            width: 30px;
+            background-color: var(--bg); /* สีเดียวกับพื้นหลังเว็บ */
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .voucher-card::before { left: -18px; box-shadow: inset -3px 0 0 var(--primary); }
+        .voucher-card::after { right: -18px; box-shadow: inset 3px 0 0 var(--primary); }
+
+        .voucher-title { font-size: 1.5em; font-weight: 800; color: var(--primary); margin: 0; }
+        .voucher-prize { font-size: 2em; font-weight: 800; color: #d63384; margin: 15px 0; text-shadow: 1px 1px 0px white; }
+        .voucher-details { font-size: 0.9em; color: #888; }
+        .btn-share-line {
+            background-color: var(--line-color);
+            color: white;
+            width: 100%;
+            margin: 20px 0 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-share-line:hover { background-color: #05b34c; transform: scale(1.05); }
+
+    </style>
+</head>
+<body>
+
+    <div class="heart-bg" id="heartBg"></div>
+
+    <div id="page1" class="container fade-in">
+        <h1>แฟนๆ รักเค้ามั้ย? ❤️</h1>
+        <p style="color: #ff8fa3; margin-bottom: 30px;">(ตอบดีๆ นะจ๊ะ)</p>
+        <div style="position: relative; height: 120px;">
+            <button class="btn btn-love" onclick="handleLove()">รักที่สุดในโลก!</button>
+            <button class="btn btn-no" id="btnNo" onmouseover="runAway()">ไม่รัก</button>
+        </div>
+    </div>
+
+    <div id="page2" class="container hidden">
+        <h2>คุยกับเค้าหน่อย ❤️</h2>
+        <p style="color: #d63384; font-size: 1em; margin: -10px 0 15px 0;">
+            แต่ให้สูงสุด 5 ข้อความนะ เพราะคุณโอเกะทำงานอยู่ เดี๋ยวจะคุยเพลิน 😆
+        </p>
+        <div id="chat-box"></div>
+        <div class="input-group">
+            <input type="text" id="userMsg" placeholder="พิมพ์ข้อความ..." onkeypress="handleEnter(event)">
+            <button class="btn btn-love" style="margin:0; padding: 5px 20px;" onclick="sendMessage()">ส่ง</button>
+        </div>
+        <p style="font-size: 0.8em; color: #aaa; margin-top: 10px;">เหลืออีก <span id="chatCount" style="font-weight:bold; color:var(--primary);">5</span> ครั้ง</p>
+    </div>
+
+    <div id="page3" class="container hidden">
+        <img src="my-photo.jpg" alt="My Face" class="my-photo">
+        <h1>รักแฟนๆ มากนะ!</h1>
+        <p style="font-size: 1.2em;">เจ้าตดเหม็นของเค้า 💨❤️</p>
+        <br>
+        <button class="btn btn-love" onclick="goToGifts()">ไปรับของขวัญ 🎁</button>
+    </div>
+
+    <div id="page4" class="container hidden">
+        <h1 id="giftTitle">เลือกของขวัญ 1 กล่อง! 🎁</h1>
+        <p id="giftSubtitle">ข้างในมีแต่ของอร่อยนะบอกเลย</p>
+        
+        <div class="gift-container">
+            <div class="gift-box" onclick="openGift(this)">?</div>
+            <div class="gift-box" onclick="openGift(this)">?</div>
+            <div class="gift-box" onclick="openGift(this)">?</div>
+        </div>
+
+        <div id="voucherCard" class="voucher-card hidden fade-in">
+            <h3 class="voucher-title">💖 Valentine Voucher 💖</h3>
+            <p style="margin: 10px 0;">คูปองนี้อนุญาตให้คุณโอเกะสั่ง...</p>
+            
+            <div id="voucherPrizeResult" class="voucher-prize"></div>
+            
+            <div class="voucher-details">
+                <p>ผู้ใช้งาน: คุณโอเกะ (คนสวย)</p>
+                <p>ผู้อนุมัติ: ปาร์คกี้ (คนหล่อ)</p>
+                <p>หมดอายุ: <span id="voucherDate"></span> (วันนี้เท่านั้น!)</p>
+            </div>
+
+            <button class="btn btn-share-line" onclick="shareToLine()">
+                <i class="fab fa-line" style="font-size: 1.5em;"></i>
+                แชร์ไปทวงสัญญาใน LINE!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- (เก็บโค้ดเดิมส่วน Background, Page 1, 2, 3 ไว้เหมือนเดิม) ---
+        function createHearts() {
+            const bg = document.getElementById('heartBg');
+            const symbols = ['❤️', '💖', '💕', '🥰', '🌹'];
+            for(let i=0; i<30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                bg.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        function runAway() {
+            const btn = document.getElementById('btnNo');
+            const container = document.getElementById('page1');
+            const x = Math.random() * (container.offsetWidth - 100);
+            const y = Math.random() * (container.offsetHeight - 50);
+            const texts = ["แน่ใจหรอ?", "มือลั่นป่าว?", "กดไม่ได้หรอก", "รักเค้าเถอะ", "ฮั่นแน่!"];
+            btn.innerText = texts[Math.floor(Math.random() * texts.length)];
+            btn.style.left = `${x}px`;
+            btn.style.top = `${y}px`;
+        }
+
+        function handleLove() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            setTimeout(() => { switchPage('page1', 'page2'); }, 1000);
+        }
+
+        function switchPage(fromId, toId) {
+            document.getElementById(fromId).classList.add('hidden');
+            const toPage = document.getElementById(toId);
+            toPage.classList.remove('hidden');
+            toPage.classList.add('fade-in');
+        }
+
+        let chatCount = 5;
+        let chatHistory = [];
+        function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
+
+        async function sendMessage() {
+            const input = document.getElementById('userMsg');
+            const msg = input.value.trim();
+            if (!msg) return;
+            addMessage(msg, 'user');
+            input.value = '';
+            const loadingId = addMessage("กำลังพิมพ์...", 'bot', true);
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ message: msg, history: chatHistory })
+                });
+                const data = await res.json();
+                document.getElementById(loadingId).remove();
+                addMessage(data.reply, 'bot');
+                chatHistory.push({ role: "user", content: msg });
+                chatHistory.push({ role: "assistant", content: data.reply });
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                addMessage("ระบบเหนื่อย... แต่เค้ารักตะเองนะ", 'bot');
+            }
+            chatCount--;
+            document.getElementById('chatCount').innerText = chatCount;
+            if (chatCount <= 0) {
+                setTimeout(() => {
+                    switchPage('page2', 'page3');
+                    confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
+                }, 2000);
+            }
+        }
+
+        function addMessage(text, sender, isLoading = false) {
+            const chatBox = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = `msg msg-${sender}`;
+            div.innerText = text;
+            if(isLoading) div.id = 'loading-' + Date.now();
+            chatBox.appendChild(div);
+            const clear = document.createElement('div');
+            clear.style.clear = 'both';
+            chatBox.appendChild(clear);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            return div.id;
+        }
+
+        function goToGifts() { switchPage('page3', 'page4'); }
+
+        // === ส่วนที่แก้ไข: Logic หน้า 4 และ Voucher ===
+        
+        let finalPrize = ""; // เก็บรางวัลไว้แชร์
+
+        function openGift(element) {
+            if(finalPrize !== "") return; // ป้องกันการกดซ้ำ
+
+            element.classList.add('shaking');
+
+            setTimeout(() => {
+                element.classList.remove('shaking');
+                
+                const prizes = ['หมูกระทะ 🐷', 'ชาบู 🍲', 'อาหารญี่ปุ่น 🍣', 'MK สุกี้ 🍲', 'BBQ Plaza 🐲'];
+                finalPrize = prizes[Math.floor(Math.random() * prizes.length)];
+                
+                // 1. ซ่อนกล่องและข้อความเดิม
+                document.querySelector('.gift-container').style.display = 'none';
+                document.getElementById('giftSubtitle').style.display = 'none';
+                document.getElementById('giftTitle').innerText = "ยินดีด้วย! คุณได้รับ...";
+
+                // 2. เตรียมข้อมูล Voucher
+                const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+                document.getElementById('voucherPrizeResult').innerText = finalPrize;
+                document.getElementById('voucherDate').innerText = today;
+
+                // 3. แสดง Voucher
+                const voucherCard = document.getElementById('voucherCard');
+                voucherCard.classList.remove('hidden');
+
+                // 4. ยิงพลุฉลอง
+                launchBigConfetti();
+
+            }, 800);
+        }
+
+        // ฟังก์ชันแชร์ไป LINE
+        async function shareToLine() {
+            // ข้อความที่จะแชร์
+            const shareText = `💖 Voucher Alert! 💖\n\nคุณโอเกะได้รับสิทธิ์กิน "${finalPrize}"\n\nปาร์คกี้ต้องพาไปกินภายในวันนี้ ห้ามเบี้ยว!\n\n(จาก Valentines App)`;
+            
+            // ใช้ Web Share API (วิธีที่ทันสมัยที่สุด)
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Valentine Voucher 💖',
+                        text: shareText,
+                        // url: window.location.href // ถ้าขึ้น host จริงแล้วให้ uncomment บรรทัดนี้เพื่อแชร์ลิงก์ด้วย
+                    });
+                } catch (err) {
+                    // ถ้าUserกดยกเลิก หรือ Browser ไม่รองรับ
+                    console.log('Error sharing:', err);
+                    fallbackShare();
+                }
+            } else {
+                // Fallback สำหรับ Browser เก่าๆ
+                fallbackShare();
+            }
+        }
+
+        function fallbackShare() {
+            alert("Browser นี้แชร์อัตโนมัติไม่ได้จ้า 😅\n\nแนะนำให้แคปหน้าจอ Voucher นี้ไปทวงปาร์คกี้ใน LINE เลย!");
+        }
+
+        function launchBigConfetti() {
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+    </script>
+</body>
+</html>
