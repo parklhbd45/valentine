@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Booting V.A.L.E.N.T.I.N.E. OS...</title> <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=VT323&display=swap" rel="stylesheet">
+    <title>Booting V.A.L.E.N.T.I.N.E. OS...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=VT323&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,8 +12,7 @@
     <style>
         :root {
             --primary: #ff4d79; --secondary: #ffb3c6; --bg: #fff0f5; --line-color: #06C755;
-            --neon-pink: #ff80ab; /* สีชมพูเทอร์มินัล */
-            --dark-bg: #2a0a16; /* สีพื้นหลังมืดๆ อมชมพู */
+            --neon-pink: #ff80ab; --dark-bg: #2a0a16;
         }
 
         body {
@@ -22,78 +22,70 @@
             color: #d63384; user-select: none;
         }
 
-        /* === 📟 CUTE TECH BOOT SCREEN (แก้ไขใหม่!) 📟 === */
+        /* === BOOT SCREEN === */
         #boot-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--dark-bg); z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; /* จัดกึ่งกลาง */
-            align-items: center; padding: 30px; box-sizing: border-box;
-            /* ใช้ฟอนต์ Pixel */
-            font-family: 'VT323', monospace; 
-            color: var(--neon-pink);
-            overflow: hidden;
-            text-shadow: 0 0 8px var(--primary); /* เรืองแสงสีชมพู */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; box-sizing: border-box; font-family: 'VT323', monospace; 
+            color: var(--neon-pink); overflow: hidden; text-shadow: 0 0 8px var(--primary);
         }
-        #terminal-container {
-            text-align: left; width: 100%; max-width: 600px;
-        }
-        #terminal-text {
-            white-space: pre-wrap; font-size: 24px; /* ตัวใหญ่ขึ้น */
-            line-height: 1.4;
-        }
+        #terminal-container { text-align: left; width: 100%; max-width: 600px; }
+        #terminal-text { white-space: pre-wrap; font-size: 24px; line-height: 1.4; }
         .blink-cursor { animation: blink 0.8s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
-        
-        /* ASCII Heart */
-        .ascii-heart {
-            font-size: 16px; line-height: 1.1; text-align: center; margin-top: 20px; color: var(--primary);
-            animation: heartbeat 1s infinite; display: none; /* ซ่อนก่อน */
-        }
+        .ascii-heart { font-size: 16px; line-height: 1.1; text-align: center; margin-top: 20px; color: var(--primary); animation: heartbeat 1s infinite; display: none; }
 
-        /* --- (Styles เดิมทั้งหมด) --- */
+        /* === CONTAINER === */
         .container {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 90%; max-width: 500px; background: rgba(255, 255, 255, 0.95); padding: 30px;
             border-radius: 30px; box-shadow: 0 20px 60px rgba(255, 77, 121, 0.3);
             transition: opacity 0.5s; backdrop-filter: blur(10px);
             border: 3px solid white; box-sizing: border-box; z-index: 10;
-            display: none; /* ซ่อนไว้ก่อน รอ Boot เสร็จ */
+            display: none; /* เริ่มต้นซ่อนไว้ */
         }
-        .container.active { display: block; } /* คลาสสำหรับโชว์ */
+        .container.active { display: block; } /* โชว์เมื่อมี class active */
 
-        /* ... (เก็บ Styles เดิมที่เหลือไว้ทั้งหมดตรงนี้) ... */
         h1 { font-size: 2em; margin-bottom: 20px; font-weight: 800; text-shadow: 2px 2px 0px #ffe6eb; }
         .hidden { display: none !important; opacity: 0; pointer-events: none; }
         .fade-in { animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        
         .btn { padding: 12px 30px; font-size: 1.2em; border: none; border-radius: 50px; cursor: pointer; margin: 10px; font-family: 'Kanit'; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; position: relative; }
         .btn-love { background: linear-gradient(45deg, #ff4d79, #ff8fa3); color: white; }
         .btn-love:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 10px 25px rgba(255, 77, 121, 0.4); }
         .btn-no { background-color: #6c757d; color: white; position: absolute; }
+        
         #chat-box { height: 300px; overflow-y: auto; border: 2px solid #ffb3c6; padding: 15px; margin-bottom: 15px; border-radius: 15px; background: #fff; text-align: left; }
         .msg { margin: 5px 0; padding: 10px 15px; border-radius: 20px; display: inline-block; max-width: 80%; font-size: 1em; line-height: 1.4; }
         .msg-user { background: var(--primary); color: white; float: right; clear: both; border-bottom-right-radius: 2px; }
         .msg-bot { background: #f1f3f5; color: #333; float: left; clear: both; border-bottom-left-radius: 2px; }
         .input-group { display: flex; gap: 10px; }
         input { flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit'; }
+        
         #world-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
         #joystick-ui { position: fixed; bottom: 20px; right: 20px; z-index: 20; display: none; flex-direction: column; align-items: center; gap: 10px; }
         .control-row { display: flex; gap: 10px; }
         .control-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.5); border: 2px solid white; backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; font-size: 24px; color: var(--primary); user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         .control-btn:active { background: rgba(255, 77, 121, 0.8); color: white; }
         #instruction-text { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.5); color: white; padding: 10px 20px; border-radius: 20px; z-index: 20; display: none; font-size: 0.9em; pointer-events: none; }
+        
         .curtain-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; pointer-events: none; display: flex; }
         .curtain-left, .curtain-right { width: 50%; height: 100%; background: #a00020; transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1); position: relative; box-shadow: inset -5px 0 10px rgba(0,0,0,0.5); background-image: repeating-linear-gradient(90deg, #a00020 0px, #800010 20px, #a00020 40px); }
         .curtain-open .curtain-left { transform: translateX(-100%); }
         .curtain-open .curtain-right { transform: translateX(100%); }
         .video-frame { border: 8px solid #333; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; aspect-ratio: 16 / 9; background: #000; margin-bottom: 20px; }
+        
         img.my-photo { width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 6px solid white; box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3); margin-bottom: 20px; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); } 45% { transform: scale(1.05); } 60% { transform: scale(1); } }
+        
         .gift-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
         .gift-box { width: 80px; height: 80px; background: linear-gradient(135deg, #ff4d79, #ff0040); color: white; display: flex; justify-content: center; align-items: center; border-radius: 15px; font-size: 2.5em; cursor: pointer; box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3); transition: all 0.3s; position: relative; }
         .gift-box:hover { transform: scale(1.1) rotate(5deg); }
         .gift-box.shaking { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+        
         .voucher-card { background: linear-gradient(135deg, #fff, #fff0f5); border: 3px dashed var(--primary); border-radius: 20px; padding: 20px; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; }
         .voucher-card::before, .voucher-card::after { content: ''; position: absolute; height: 30px; width: 30px; background-color: var(--bg); border-radius: 50%; top: 50%; transform: translateY(-50%); }
         .voucher-card::before { left: -18px; box-shadow: inset -3px 0 0 var(--primary); }
@@ -103,7 +95,8 @@
         .voucher-details { font-size: 0.9em; color: #888; }
         .btn-share-line { background-color: var(--line-color); color: white; width: 100%; margin: 20px 0 0 0; display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none; }
         .btn-share-line:hover { background-color: #05b34c; transform: scale(1.05); }
-        .heart-bg { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; display: none; /* ซ่อนก่อน */ }
+        
+        .heart-bg { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; display: none; }
         .heart-bg.active { display: block; }
         .heart-particle { position: absolute; bottom: -20px; color: rgba(255, 77, 121, 0.3); animation: floatUp 10s linear infinite; font-size: 20px; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
@@ -116,22 +109,11 @@
             <div id="terminal-text"></div>
         </div>
         <div class="ascii-heart" id="asciiHeart">
-            .<br>
-            .:.<br>
-            .:::::.<br>
-          .:::::::::.<br>
-         :::::::::::::<br>
-        ':::::::::::::'<br>
-          ':::::::::'<br>
-            ':::::'<br>
-              ':'<br>
-               .<br>
-               I LOVE YOU!
+            .<br>.:.<br>.:::::.<br>.:::::::::.<br>:::::::::::::<br>':::::::::::::'<br>':::::::::'<br>':::::'<br>':'<br>.<br>I LOVE YOU!
         </div>
     </div>
 
     <div class="heart-bg" id="heartBg"></div>
-
     <div id="world-container"></div>
     
     <div id="instruction-text">กดลูกศร ⬆️ ⬇️ เพื่อเดิน | เดินไปหาม่านสีแดง! ❤️</div>
@@ -214,11 +196,7 @@
     </div>
 
     <script>
-        // =========================================
-        // 📟 CUTE BOOT SEQUENCE LOGIC (แก้ไขใหม่) 📟
-        // =========================================
-        
-        // ข้อความสคริปต์น่ารักๆ สไตล์ Tech
+        // === BOOT LOGIC ===
         const bootMessages = [
             "> Powering on V.A.L.E.N.T.I.N.E. Unit...",
             "> Checking voltage... HIGH VOLTAGE OF LOVE! ⚡",
@@ -226,7 +204,6 @@
             "> Target detected: 'Khun Oke' (The Best Engineer)",
             "> Analyzing data... Result: 100% MATCH ❤️",
             "> Loading boyfriend protocol (Parkky_v2.0)...",
-            "> [|||||||   ] 70% Loading hugs...",
             "> [||||||||||] 100% Surprises ready!",
             "> System status: KAWII DETECTED!",
             "> Executing program: 'LOVE_YOU_FOREVER.exe'",
@@ -243,20 +220,18 @@
                 if (charIndex < currentLine.length) {
                     terminal.innerHTML += currentLine.charAt(charIndex);
                     charIndex++;
-                    setTimeout(typeWriter, 40); // พิมพ์ช้าลงนิดนึงให้ดูน่ารัก
+                    setTimeout(typeWriter, 30);
                 } else {
                     terminal.innerHTML += "<br>";
                     lineIndex++;
                     charIndex = 0;
-                    terminal.scrollTop = terminal.scrollHeight; // Auto scroll
-                    setTimeout(typeWriter, 400); 
+                    terminal.scrollTop = terminal.scrollHeight;
+                    setTimeout(typeWriter, 300); 
                 }
             } else {
-                // พิมพ์เสร็จแล้ว -> โชว์หัวใจ Pixel
                 document.getElementById('asciiHeart').style.display = 'block';
-                setTimeout(finishBoot, 2000); // โชว์หัวใจค้างไว้ 2 วิ
+                setTimeout(finishBoot, 2000);
             }
-            // อัปเดต cursor ทุกครั้งที่พิมพ์
             const existingCursor = document.querySelector('.blink-cursor');
             if (existingCursor) existingCursor.remove();
             terminal.innerHTML += '<span class="blink-cursor">_</span>';
@@ -264,28 +239,39 @@
 
         function finishBoot() {
             const bootScreen = document.getElementById('boot-screen');
-            bootScreen.style.transition = 'opacity 1.5s ease-in-out'; // เฟดออกแบบนุ่มๆ
+            bootScreen.style.transition = 'opacity 1.5s ease-in-out';
             bootScreen.style.opacity = '0';
-            
             setTimeout(() => {
                 bootScreen.style.display = 'none';
-                document.getElementById('page1').classList.add('active');
+                document.getElementById('page1').classList.add('active'); // โชว์หน้า 1
                 document.getElementById('heartBg').classList.add('active');
             }, 1500);
         }
 
-        // เริ่มรันระบบเมื่อโหลดเสร็จ
-        window.onload = () => {
-            setTimeout(typeWriter, 800);
-        };
+        window.onload = () => { setTimeout(typeWriter, 800); };
 
+        // === NAVIGATION LOGIC (แก้บั๊กตรงนี้!) ===
+        function switchPage(fromId, toId) {
+            // ซ่อนหน้าเก่า
+            const fromPage = document.getElementById(fromId);
+            fromPage.classList.remove('active');
+            fromPage.classList.add('hidden');
+            
+            // โชว์หน้าใหม่
+            const toPage = document.getElementById(toId);
+            toPage.classList.remove('hidden');
+            toPage.classList.add('active'); // ต้องมี active!
+            toPage.classList.add('fade-in');
+        }
 
-        // --- (Logic เดิมทั้งหมด) ---
         function createHearts() { const bg = document.getElementById('heartBg'); const symbols = ['❤️', '💖', '💕', '🥰', '🌹']; for(let i=0; i<30; i++) { const heart = document.createElement('div'); heart.className = 'heart-particle'; heart.innerText = symbols[Math.floor(Math.random() * symbols.length)]; heart.style.left = Math.random() * 100 + '%'; heart.style.animationDuration = (Math.random() * 5 + 5) + 's'; heart.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(heart); } }
         createHearts();
         function runAway() { const btn = document.getElementById('btnNo'); const container = document.getElementById('page1'); const x = Math.random() * (container.offsetWidth - 100); const y = Math.random() * (container.offsetHeight - 50); const texts = ["แน่ใจหรอ?", "มือลั่นป่าว?", "กดไม่ได้หรอก", "รักเค้าเถอะ", "ฮั่นแน่!"]; btn.innerText = texts[Math.floor(Math.random() * texts.length)]; btn.style.left = `${x}px`; btn.style.top = `${y}px`; }
-        function handleLove() { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); setTimeout(() => { switchPage('page1', 'page2'); }, 1000); }
-        function switchPage(fromId, toId) { document.getElementById(fromId).classList.remove('active'); document.getElementById(fromId).classList.add('hidden'); const toPage = document.getElementById(toId); toPage.classList.remove('hidden'); toPage.classList.add('fade-in'); }
+        
+        function handleLove() { 
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
+            setTimeout(() => { switchPage('page1', 'page2'); }, 1000); 
+        }
 
         let chatCount = 5; let chatHistory = [];
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
@@ -296,6 +282,7 @@
             chatCount--; document.getElementById('chatCount').innerText = chatCount;
             if (chatCount <= 0) { 
                 setTimeout(() => { 
+                    document.getElementById('page2').classList.remove('active');
                     document.getElementById('page2').classList.add('hidden');
                     start3DWorld();
                 }, 1500); 
@@ -303,7 +290,6 @@
         }
         function addMessage(text, sender, isLoading = false) { const chatBox = document.getElementById('chat-box'); const div = document.createElement('div'); div.className = `msg msg-${sender}`; div.innerText = text; if(isLoading) div.id = 'loading-' + Date.now(); chatBox.appendChild(div); const clear = document.createElement('div'); clear.style.clear = 'both'; chatBox.appendChild(clear); chatBox.scrollTop = chatBox.scrollHeight; return div.id; }
 
-        // 3D World & Head Bobbing
         let scene, camera, renderer; let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false; let is3DActive = false;
         let walkingTime = 0; const bobSpeed = 8; const bobAmount = 0.05; const baseHeight = 1.6;
 
@@ -335,7 +321,17 @@
             const speed = 0.1; const rotSpeed = 0.03; let isMoving = false;
             if (moveForward) { camera.translateZ(-speed); isMoving = true; } if (moveBackward) { camera.translateZ(speed); isMoving = true; } if (moveLeft) camera.rotateY(rotSpeed); if (moveRight) camera.rotateY(-rotSpeed);
             if (isMoving) { walkingTime += 0.05; camera.position.y = baseHeight + Math.sin(walkingTime * bobSpeed) * bobAmount; } else { camera.position.y = THREE.MathUtils.lerp(camera.position.y, baseHeight, 0.1); }
-            if (camera.position.z < -8) { is3DActive = false; document.getElementById('world-container').style.display = 'none'; document.getElementById('joystick-ui').style.display = 'none'; document.getElementById('instruction-text').style.display = 'none'; const concertPage = document.getElementById('pageConcert'); concertPage.classList.remove('hidden'); concertPage.classList.add('fade-in'); setTimeout(() => { document.getElementById('curtains').classList.add('curtain-open'); }, 500); }
+            if (camera.position.z < -8) { 
+                is3DActive = false; document.getElementById('world-container').style.display = 'none'; document.getElementById('joystick-ui').style.display = 'none'; document.getElementById('instruction-text').style.display = 'none'; 
+                
+                // แก้บั๊กตรงนี้ด้วย! (เปิดหน้า Concert)
+                const concertPage = document.getElementById('pageConcert');
+                concertPage.classList.remove('hidden'); 
+                concertPage.classList.add('active'); // เพิ่ม active
+                concertPage.classList.add('fade-in'); 
+                
+                setTimeout(() => { document.getElementById('curtains').classList.add('curtain-open'); }, 500); 
+            }
             renderer.render(scene, camera);
         }
         window.addEventListener('resize', () => { if(camera && renderer) { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); } });
