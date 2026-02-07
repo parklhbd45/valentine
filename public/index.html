@@ -3,97 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Lovely Valentine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Project: VALENTINE PROTOCOL</title> <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #ff4d79;
-            --secondary: #ffb3c6;
-            --bg: #fff0f5;
-            --line-color: #06C755;
+            --primary: #ff4d79; --secondary: #ffb3c6; --bg: #fff0f5; --line-color: #06C755;
+            --tech-green: #0f0; /* สีเขียว Terminal */
         }
 
         body {
             font-family: 'Kanit', sans-serif;
             background-color: var(--bg);
-            text-align: center;
-            margin: 0;
-            height: 100vh;
-            overflow: hidden;
-            color: #d63384;
-            user-select: none; /* ห้ามคลุมดำ */
+            text-align: center; margin: 0; height: 100vh; overflow: hidden;
+            color: #d63384; user-select: none;
         }
 
-        /* Container หลัก */
+        /* === 📟 TECH BOOT SCREEN (ส่วนใหม่สุดล้ำ) 📟 === */
+        #boot-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 9999; /* อยู่บนสุด */
+            display: flex; flex-direction: column; justify-content: flex-start;
+            align-items: flex-start; padding: 20px; box-sizing: border-box;
+            font-family: 'Share Tech Mono', monospace; /* ฟอนต์แนว Tech */
+            color: var(--tech-green);
+            overflow: hidden;
+        }
+        #terminal-text {
+            text-align: left; white-space: pre-wrap; font-size: 14px; line-height: 1.5;
+            text-shadow: 0 0 5px var(--tech-green); z-index: 2;
+        }
+        .blink-cursor { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* Matrix Rain Effect */
+        #matrix-canvas {
+            position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.3;
+        }
+
+        /* --- (Styles เดิมทั้งหมด) --- */
         .container {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 90%; max-width: 500px; background: rgba(255, 255, 255, 0.95); padding: 30px;
             border-radius: 30px; box-shadow: 0 20px 60px rgba(255, 77, 121, 0.3);
             transition: opacity 0.5s; backdrop-filter: blur(10px);
             border: 3px solid white; box-sizing: border-box; z-index: 10;
+            display: none; /* ซ่อนไว้ก่อน รอ Boot เสร็จ */
         }
-        
+        .container.active { display: block; } /* คลาสสำหรับโชว์ */
+
+        /* ... (เก็บ Styles เดิมที่เหลือไว้ทั้งหมดตรงนี้) ... */
         h1 { font-size: 2em; margin-bottom: 20px; font-weight: 800; text-shadow: 2px 2px 0px #ffe6eb; }
         .hidden { display: none !important; opacity: 0; pointer-events: none; }
         .fade-in { animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-
         .btn { padding: 12px 30px; font-size: 1.2em; border: none; border-radius: 50px; cursor: pointer; margin: 10px; font-family: 'Kanit'; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; position: relative; }
         .btn-love { background: linear-gradient(45deg, #ff4d79, #ff8fa3); color: white; }
         .btn-love:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 10px 25px rgba(255, 77, 121, 0.4); }
         .btn-no { background-color: #6c757d; color: white; position: absolute; }
-
-        /* Chat Styles */
         #chat-box { height: 300px; overflow-y: auto; border: 2px solid #ffb3c6; padding: 15px; margin-bottom: 15px; border-radius: 15px; background: #fff; text-align: left; }
         .msg { margin: 5px 0; padding: 10px 15px; border-radius: 20px; display: inline-block; max-width: 80%; font-size: 1em; line-height: 1.4; }
         .msg-user { background: var(--primary); color: white; float: right; clear: both; border-bottom-right-radius: 2px; }
         .msg-bot { background: #f1f3f5; color: #333; float: left; clear: both; border-bottom-left-radius: 2px; }
         .input-group { display: flex; gap: 10px; }
         input { flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit'; }
-
-        /* === 3D World Canvas === */
-        #world-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; display: none; /* ซ่อนไว้ก่อน */
-        }
-        
-        /* UI ควบคุมการเดิน (สำหรับมือถือ) */
-        #joystick-ui {
-            position: fixed; bottom: 20px; right: 20px; z-index: 20;
-            display: none; /* โชว์เฉพาะตอนเดิน */
-            flex-direction: column; align-items: center; gap: 10px;
-        }
+        #world-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; }
+        #joystick-ui { position: fixed; bottom: 20px; right: 20px; z-index: 20; display: none; flex-direction: column; align-items: center; gap: 10px; }
         .control-row { display: flex; gap: 10px; }
-        .control-btn {
-            width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.5);
-            border: 2px solid white; backdrop-filter: blur(5px);
-            display: flex; justify-content: center; align-items: center; font-size: 24px; color: var(--primary);
-            user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-        }
+        .control-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.5); border: 2px solid white; backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; font-size: 24px; color: var(--primary); user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         .control-btn:active { background: rgba(255, 77, 121, 0.8); color: white; }
-
-        #instruction-text {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.5); color: white; padding: 10px 20px; border-radius: 20px;
-            z-index: 20; display: none; font-size: 0.9em; pointer-events: none;
-        }
-
-        /* Concert & Curtain */
+        #instruction-text { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.5); color: white; padding: 10px 20px; border-radius: 20px; z-index: 20; display: none; font-size: 0.9em; pointer-events: none; }
         .curtain-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; pointer-events: none; display: flex; }
         .curtain-left, .curtain-right { width: 50%; height: 100%; background: #a00020; transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1); position: relative; box-shadow: inset -5px 0 10px rgba(0,0,0,0.5); background-image: repeating-linear-gradient(90deg, #a00020 0px, #800010 20px, #a00020 40px); }
         .curtain-open .curtain-left { transform: translateX(-100%); }
         .curtain-open .curtain-right { transform: translateX(100%); }
         .video-frame { border: 8px solid #333; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; aspect-ratio: 16 / 9; background: #000; margin-bottom: 20px; }
-
-        /* Photo Page 3 */
         img.my-photo { width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 6px solid white; box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3); margin-bottom: 20px; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); } 45% { transform: scale(1.05); } 60% { transform: scale(1); } }
-        
-        /* Gift & Voucher */
         .gift-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
         .gift-box { width: 80px; height: 80px; background: linear-gradient(135deg, #ff4d79, #ff0040); color: white; display: flex; justify-content: center; align-items: center; border-radius: 15px; font-size: 2.5em; cursor: pointer; box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3); transition: all 0.3s; position: relative; }
         .gift-box:hover { transform: scale(1.1) rotate(5deg); }
@@ -108,10 +96,20 @@
         .voucher-details { font-size: 0.9em; color: #888; }
         .btn-share-line { background-color: var(--line-color); color: white; width: 100%; margin: 20px 0 0 0; display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none; }
         .btn-share-line:hover { background-color: #05b34c; transform: scale(1.05); }
-
+        .heart-bg { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; display: none; /* ซ่อนก่อน */ }
+        .heart-bg.active { display: block; }
+        .heart-particle { position: absolute; bottom: -20px; color: rgba(255, 77, 121, 0.3); animation: floatUp 10s linear infinite; font-size: 20px; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
+
+    <div id="boot-screen">
+        <canvas id="matrix-canvas"></canvas>
+        <div id="terminal-text"></div>
+    </div>
+
+    <div class="heart-bg" id="heartBg"></div>
 
     <div id="world-container"></div>
     
@@ -152,12 +150,11 @@
             <div class="curtain-left"></div>
             <div class="curtain-right"></div>
         </div>
-
         <h2>คอนเสิร์ตส่วนตัว 🎶</h2>
         <p style="color: #ff8fa3;">เพลงนี้เค้าตั้งใจเล่นให้ตะเองนะ</p>
         <div class="video-frame">
             <iframe id="youtubeVideo" width="100%" height="100%" 
-                src="https://www.youtube.com/embed/TqN5YKD3dgw?enablejsapi=1" 
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" 
                 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
         </div>
@@ -196,10 +193,103 @@
     </div>
 
     <script>
-        // --- ส่วน Background & Page 1 & Chat (เหมือนเดิม) ---
+        // =========================================
+        // 📟 BOOT SEQUENCE & MATRIX LOGIC (ส่วนใหม่) 📟
+        // =========================================
+        
+        // 1. Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0F0'; // Green Text
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = katakana.charAt(Math.floor(Math.random() * katakana.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        const matrixInterval = setInterval(drawMatrix, 30);
+
+        // 2. Terminal Typing Effect
+        // (ข้อความสคริปต์เท่ๆ เอาใจแฟนวิศวะ)
+        const bootMessages = [
+            "> Initializing Valentine Protocol v2.14...",
+            "> Checking system integrity...",
+            "> CPU: OK | RAM: OK | HEART: OVERLOADED ❤️",
+            "> Connecting to Trillion Company secure server...",
+            "> Bypass firewall... Success.",
+            "> Locating target: 'Khun Oke' (Electrical Engineer)",
+            "> Target found. Analyzing cuteness levels...",
+            "> Cuteness level: OFF THE CHARTS! (Error 999)",
+            "> Loading boyfriend module (Parkky_AI)... Done.",
+            "> Preparing surprise assets... (Photos, Music, Gifts)",
+            "> All systems ready.",
+            "> EXECUTING LOVE SEQUENCE...",
+            " "
+        ];
+        
+        const terminal = document.getElementById('terminal-text');
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeWriter() {
+            if (lineIndex < bootMessages.length) {
+                const currentLine = bootMessages[lineIndex];
+                if (charIndex < currentLine.length) {
+                    terminal.innerHTML += currentLine.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 30); // ความเร็วพิมพ์
+                } else {
+                    terminal.innerHTML += "<br>";
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeWriter, 300); // รอระหว่างบรรทัด
+                }
+            } else {
+                // พิมพ์เสร็จแล้ว -> จบการบูต
+                setTimeout(finishBoot, 1000);
+            }
+            terminal.innerHTML += '<span class="blink-cursor">_</span>'; // เพิ่ม cursor กระพริบ
+        }
+
+        function finishBoot() {
+            clearInterval(matrixInterval); // หยุด Matrix
+            const bootScreen = document.getElementById('boot-screen');
+            bootScreen.style.transition = 'opacity 1s';
+            bootScreen.style.opacity = '0'; // ค่อยๆ จางหายไป
+            
+            setTimeout(() => {
+                bootScreen.style.display = 'none'; // ซ่อนถาวร
+                document.getElementById('page1').classList.add('active'); // โชว์หน้าแรก
+                document.getElementById('heartBg').classList.add('active'); // โชว์ BG หัวใจ
+            }, 1000);
+        }
+
+        // เริ่มรันระบบเมื่อโหลดเสร็จ
+        window.onload = () => {
+            setTimeout(typeWriter, 500);
+        };
+
+
+        // --- (Logic เดิมทั้งหมด) ---
+        function createHearts() { const bg = document.getElementById('heartBg'); const symbols = ['❤️', '💖', '💕', '🥰', '🌹']; for(let i=0; i<30; i++) { const heart = document.createElement('div'); heart.className = 'heart-particle'; heart.innerText = symbols[Math.floor(Math.random() * symbols.length)]; heart.style.left = Math.random() * 100 + '%'; heart.style.animationDuration = (Math.random() * 5 + 5) + 's'; heart.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(heart); } }
+        createHearts();
         function runAway() { const btn = document.getElementById('btnNo'); const container = document.getElementById('page1'); const x = Math.random() * (container.offsetWidth - 100); const y = Math.random() * (container.offsetHeight - 50); const texts = ["แน่ใจหรอ?", "มือลั่นป่าว?", "กดไม่ได้หรอก", "รักเค้าเถอะ", "ฮั่นแน่!"]; btn.innerText = texts[Math.floor(Math.random() * texts.length)]; btn.style.left = `${x}px`; btn.style.top = `${y}px`; }
         function handleLove() { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); setTimeout(() => { switchPage('page1', 'page2'); }, 1000); }
-        function switchPage(fromId, toId) { document.getElementById(fromId).classList.add('hidden'); const toPage = document.getElementById(toId); toPage.classList.remove('hidden'); toPage.classList.add('fade-in'); }
+        function switchPage(fromId, toId) { document.getElementById(fromId).classList.remove('active'); document.getElementById(fromId).classList.add('hidden'); const toPage = document.getElementById(toId); toPage.classList.remove('hidden'); toPage.classList.add('fade-in'); }
 
         let chatCount = 5; let chatHistory = [];
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
@@ -210,162 +300,50 @@
             chatCount--; document.getElementById('chatCount').innerText = chatCount;
             if (chatCount <= 0) { 
                 setTimeout(() => { 
-                    document.getElementById('page2').classList.add('hidden'); // ซ่อนแชท
-                    start3DWorld(); // เริ่มเกมเดิน 3D!
+                    document.getElementById('page2').classList.add('hidden');
+                    start3DWorld();
                 }, 1500); 
             }
         }
         function addMessage(text, sender, isLoading = false) { const chatBox = document.getElementById('chat-box'); const div = document.createElement('div'); div.className = `msg msg-${sender}`; div.innerText = text; if(isLoading) div.id = 'loading-' + Date.now(); chatBox.appendChild(div); const clear = document.createElement('div'); clear.style.clear = 'both'; chatBox.appendChild(clear); chatBox.scrollTop = chatBox.scrollHeight; return div.id; }
 
-        // ==========================================
-        // 🎮 3D WALKING LOGIC (THREE.JS) + HEAD BOBBING 🎮
-        // ==========================================
-        let scene, camera, renderer;
-        let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
-        let is3DActive = false;
-        
-        // ตัวแปรสำหรับ Head Bobbing (เดินโยกหัว)
-        let walkingTime = 0;
-        const bobSpeed = 8; // ความเร็วในการโยก
-        const bobAmount = 0.05; // ความสูงในการโยก (เมตร)
-        const baseHeight = 1.6; // ระดับสายตาปกติ
+        // 3D World & Head Bobbing
+        let scene, camera, renderer; let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false; let is3DActive = false;
+        let walkingTime = 0; const bobSpeed = 8; const bobAmount = 0.05; const baseHeight = 1.6;
 
         function start3DWorld() {
-            is3DActive = true;
-            document.getElementById('world-container').style.display = 'block';
-            document.getElementById('joystick-ui').style.display = 'flex';
-            document.getElementById('instruction-text').style.display = 'block';
-
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xfff0f5);
-            scene.fog = new THREE.Fog(0xfff0f5, 1, 20);
-
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, baseHeight, 5); // เริ่มที่ระดับสายตา
-
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('world-container').appendChild(renderer.domElement);
-
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-            scene.add(ambientLight);
-
-            const floorGeo = new THREE.PlaneGeometry(10, 50);
-            const floorMat = new THREE.MeshBasicMaterial({ color: 0xffb3c6 });
-            const floor = new THREE.Mesh(floorGeo, floorMat);
-            floor.rotation.x = -Math.PI / 2;
-            scene.add(floor);
-
+            is3DActive = true; document.getElementById('world-container').style.display = 'block'; document.getElementById('joystick-ui').style.display = 'flex'; document.getElementById('instruction-text').style.display = 'block';
+            scene = new THREE.Scene(); scene.background = new THREE.Color(0xfff0f5); scene.fog = new THREE.Fog(0xfff0f5, 1, 20);
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000); camera.position.set(0, baseHeight, 5);
+            renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setSize(window.innerWidth, window.innerHeight); document.getElementById('world-container').appendChild(renderer.domElement);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); scene.add(ambientLight);
+            const floorGeo = new THREE.PlaneGeometry(10, 50); const floorMat = new THREE.MeshBasicMaterial({ color: 0xffb3c6 }); const floor = new THREE.Mesh(floorGeo, floorMat); floor.rotation.x = -Math.PI / 2; scene.add(floor);
             const textureLoader = new THREE.TextureLoader();
             function createFrame(imgPath, x, z, rotationY) {
                 textureLoader.load(imgPath, (texture) => {
-                    const aspect = texture.image.width / texture.image.height;
-                    const geo = new THREE.BoxGeometry(2, 2/aspect, 0.1);
-                    const mat = new THREE.MeshBasicMaterial({ map: texture });
-                    const mesh = new THREE.Mesh(geo, mat);
-                    mesh.position.set(x, 1.6, z);
-                    mesh.rotation.y = rotationY;
-                    const frameGeo = new THREE.BoxGeometry(2.2, (2/aspect)+0.2, 0.05);
-                    const frameMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-                    const frame = new THREE.Mesh(frameGeo, frameMat);
-                    frame.position.set(0, 0, -0.05);
-                    mesh.add(frame);
-                    scene.add(mesh);
+                    const aspect = texture.image.width / texture.image.height; const geo = new THREE.BoxGeometry(2, 2/aspect, 0.1); const mat = new THREE.MeshBasicMaterial({ map: texture }); const mesh = new THREE.Mesh(geo, mat); mesh.position.set(x, 1.6, z); mesh.rotation.y = rotationY;
+                    const frameGeo = new THREE.BoxGeometry(2.2, (2/aspect)+0.2, 0.05); const frameMat = new THREE.MeshBasicMaterial({ color: 0xffffff }); const frame = new THREE.Mesh(frameGeo, frameMat); frame.position.set(0, 0, -0.05); mesh.add(frame); scene.add(mesh);
                 });
             }
-
-            createFrame('photo1.jpg', -2.5, 2, 0.5);
-            createFrame('photo2.jpg', 2.5, 0, -0.5);
-            createFrame('photo3.jpg', -2.5, -3, 0.5);
-            createFrame('photo4.jpg', 2.5, -6, -0.5);
-
-            const endGeo = new THREE.BoxGeometry(8, 5, 0.1);
-            const endMat = new THREE.MeshBasicMaterial({ color: 0xa00020 });
-            const endWall = new THREE.Mesh(endGeo, endMat);
-            endWall.position.set(0, 2.5, -10);
-            scene.add(endWall);
-
-            document.addEventListener('keydown', (e) => {
-                switch(e.code) {
-                    case 'ArrowUp': case 'KeyW': moveForward = true; break;
-                    case 'ArrowDown': case 'KeyS': moveBackward = true; break;
-                    case 'ArrowLeft': case 'KeyA': moveLeft = true; break;
-                    case 'ArrowRight': case 'KeyD': moveRight = true; break;
-                }
-            });
-            document.addEventListener('keyup', (e) => {
-                switch(e.code) {
-                    case 'ArrowUp': case 'KeyW': moveForward = false; break;
-                    case 'ArrowDown': case 'KeyS': moveBackward = false; break;
-                    case 'ArrowLeft': case 'KeyA': moveLeft = false; break;
-                    case 'ArrowRight': case 'KeyD': moveRight = false; break;
-                }
-            });
-
-            const btnUp = document.getElementById('btnUp');
-            const btnDown = document.getElementById('btnDown');
-            const btnLeft = document.getElementById('btnLeft');
-            const btnRight = document.getElementById('btnRight');
-            const handleTouch = (btn, dir, val) => {
-                btn.addEventListener('touchstart', (e) => { e.preventDefault(); dir = true; });
-                btn.addEventListener('touchend', (e) => { e.preventDefault(); dir = false; });
-                if(btn.id === 'btnUp') { btn.addEventListener('touchstart', ()=>moveForward=true); btn.addEventListener('touchend', ()=>moveForward=false); }
-                if(btn.id === 'btnDown') { btn.addEventListener('touchstart', ()=>moveBackward=true); btn.addEventListener('touchend', ()=>moveBackward=false); }
-                if(btn.id === 'btnLeft') { btn.addEventListener('touchstart', ()=>moveLeft=true); btn.addEventListener('touchend', ()=>moveLeft=false); }
-                if(btn.id === 'btnRight') { btn.addEventListener('touchstart', ()=>moveRight=true); btn.addEventListener('touchend', ()=>moveRight=false); }
-            };
+            createFrame('photo1.jpg', -2.5, 2, 0.5); createFrame('photo2.jpg', 2.5, 0, -0.5); createFrame('photo3.jpg', -2.5, -3, 0.5); createFrame('photo4.jpg', 2.5, -6, -0.5);
+            const endGeo = new THREE.BoxGeometry(8, 5, 0.1); const endMat = new THREE.MeshBasicMaterial({ color: 0xa00020 }); const endWall = new THREE.Mesh(endGeo, endMat); endWall.position.set(0, 2.5, -10); scene.add(endWall);
+            document.addEventListener('keydown', (e) => { switch(e.code) { case 'ArrowUp': case 'KeyW': moveForward = true; break; case 'ArrowDown': case 'KeyS': moveBackward = true; break; case 'ArrowLeft': case 'KeyA': moveLeft = true; break; case 'ArrowRight': case 'KeyD': moveRight = true; break; } });
+            document.addEventListener('keyup', (e) => { switch(e.code) { case 'ArrowUp': case 'KeyW': moveForward = false; break; case 'ArrowDown': case 'KeyS': moveBackward = false; break; case 'ArrowLeft': case 'KeyA': moveLeft = false; break; case 'ArrowRight': case 'KeyD': moveRight = false; break; } });
+            const btnUp = document.getElementById('btnUp'); const btnDown = document.getElementById('btnDown'); const btnLeft = document.getElementById('btnLeft'); const btnRight = document.getElementById('btnRight');
+            const handleTouch = (btn, dir, val) => { btn.addEventListener('touchstart', (e) => { e.preventDefault(); dir = true; }); btn.addEventListener('touchend', (e) => { e.preventDefault(); dir = false; }); if(btn.id === 'btnUp') { btn.addEventListener('touchstart', ()=>moveForward=true); btn.addEventListener('touchend', ()=>moveForward=false); } if(btn.id === 'btnDown') { btn.addEventListener('touchstart', ()=>moveBackward=true); btn.addEventListener('touchend', ()=>moveBackward=false); } if(btn.id === 'btnLeft') { btn.addEventListener('touchstart', ()=>moveLeft=true); btn.addEventListener('touchend', ()=>moveLeft=false); } if(btn.id === 'btnRight') { btn.addEventListener('touchstart', ()=>moveRight=true); btn.addEventListener('touchend', ()=>moveRight=false); } };
             handleTouch(btnUp); handleTouch(btnDown); handleTouch(btnLeft); handleTouch(btnRight);
-
             animate3D();
         }
-
         function animate3D() {
-            if (!is3DActive) return;
-            requestAnimationFrame(animate3D);
-
-            const speed = 0.1;
-            const rotSpeed = 0.03;
-            let isMoving = false;
-
-            if (moveForward) { camera.translateZ(-speed); isMoving = true; }
-            if (moveBackward) { camera.translateZ(speed); isMoving = true; }
-            if (moveLeft) camera.rotateY(rotSpeed);
-            if (moveRight) camera.rotateY(-rotSpeed);
-            
-            // --- Head Bobbing Logic (ส่วนที่เพิ่มใหม่) ---
-            if (isMoving) {
-                // ถ้าเดินอยู่ ให้เพิ่มเวลาและคำนวณการโยก (ใช้ sin wave)
-                walkingTime += 0.05;
-                camera.position.y = baseHeight + Math.sin(walkingTime * bobSpeed) * bobAmount;
-            } else {
-                // ถ้าหยุดเดิน ให้ค่อยๆ กลับมาระดับเดิม
-                camera.position.y = THREE.MathUtils.lerp(camera.position.y, baseHeight, 0.1);
-            }
-            // -------------------------------------------
-
-            if (camera.position.z < -8) {
-                is3DActive = false;
-                document.getElementById('world-container').style.display = 'none';
-                document.getElementById('joystick-ui').style.display = 'none';
-                document.getElementById('instruction-text').style.display = 'none';
-                const concertPage = document.getElementById('pageConcert');
-                concertPage.classList.remove('hidden');
-                concertPage.classList.add('fade-in');
-                setTimeout(() => { document.getElementById('curtains').classList.add('curtain-open'); }, 500);
-            }
-
+            if (!is3DActive) return; requestAnimationFrame(animate3D);
+            const speed = 0.1; const rotSpeed = 0.03; let isMoving = false;
+            if (moveForward) { camera.translateZ(-speed); isMoving = true; } if (moveBackward) { camera.translateZ(speed); isMoving = true; } if (moveLeft) camera.rotateY(rotSpeed); if (moveRight) camera.rotateY(-rotSpeed);
+            if (isMoving) { walkingTime += 0.05; camera.position.y = baseHeight + Math.sin(walkingTime * bobSpeed) * bobAmount; } else { camera.position.y = THREE.MathUtils.lerp(camera.position.y, baseHeight, 0.1); }
+            if (camera.position.z < -8) { is3DActive = false; document.getElementById('world-container').style.display = 'none'; document.getElementById('joystick-ui').style.display = 'none'; document.getElementById('instruction-text').style.display = 'none'; const concertPage = document.getElementById('pageConcert'); concertPage.classList.remove('hidden'); concertPage.classList.add('fade-in'); setTimeout(() => { document.getElementById('curtains').classList.add('curtain-open'); }, 500); }
             renderer.render(scene, camera);
         }
+        window.addEventListener('resize', () => { if(camera && renderer) { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); } });
 
-        window.addEventListener('resize', () => {
-            if(camera && renderer) {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            }
-        });
-
-        // --- Functions Page 3 & 4 (เหมือนเดิม) ---
         function goToLovePage() { switchPage('pageConcert', 'page3'); }
         function goToGifts() { switchPage('page3', 'page4'); }
         let finalPrize = ""; 
