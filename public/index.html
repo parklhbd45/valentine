@@ -135,25 +135,25 @@
             flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit';
         }
 
-        /* Photo Page */
+        /* Photo Slideshow Styles (Updated!) */
+        .photo-frame {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 20px auto;
+        }
         img.my-photo {
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             border-radius: 50%;
             border: 6px solid white;
             box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3);
-            margin-bottom: 20px;
-            animation: heartbeat 1.5s infinite;
+            /* เพิ่ม Transition เพื่อให้เวลาเปลี่ยนรูปมัน Fade นุ่มๆ */
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
         }
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.05); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.05); }
-            60% { transform: scale(1); }
-        }
-
+        
         /* Gift Boxes */
         .gift-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
         .gift-box {
@@ -180,7 +180,7 @@
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
 
-        /* === ส่วนของ Voucher ที่เพิ่มเข้ามา === */
+        /* Voucher Styles */
         .voucher-card {
             background: linear-gradient(135deg, #fff, #fff0f5);
             border: 3px dashed var(--primary);
@@ -195,7 +195,7 @@
             position: absolute;
             height: 30px;
             width: 30px;
-            background-color: var(--bg); /* สีเดียวกับพื้นหลังเว็บ */
+            background-color: var(--bg);
             border-radius: 50%;
             top: 50%;
             transform: translateY(-50%);
@@ -206,6 +206,8 @@
         .voucher-title { font-size: 1.5em; font-weight: 800; color: var(--primary); margin: 0; }
         .voucher-prize { font-size: 2em; font-weight: 800; color: #d63384; margin: 15px 0; text-shadow: 1px 1px 0px white; }
         .voucher-details { font-size: 0.9em; color: #888; }
+        
+        /* ปุ่ม LINE สีเขียวเหนี่ยวทรัพย์ */
         .btn-share-line {
             background-color: var(--line-color);
             color: white;
@@ -215,6 +217,7 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
+            text-decoration: none; /* ลบเส้นใต้ */
         }
         .btn-share-line:hover { background-color: #05b34c; transform: scale(1.05); }
 
@@ -247,7 +250,10 @@
     </div>
 
     <div id="page3" class="container hidden">
-        <img src="IMG_5906.JPG" alt="My Face" class="my-photo">
+        <div class="photo-frame">
+            <img src="IMG_5906.JPG" id="slideshowImg" alt="My Face" class="my-photo">
+        </div>
+        
         <h1>รักแฟนๆ มากนะ!</h1>
         <p style="font-size: 1.2em;">เจ้าตดเหม็นของเค้า 💨❤️</p>
         <br>
@@ -278,13 +284,13 @@
 
             <button class="btn btn-share-line" onclick="shareToLine()">
                 <i class="fab fa-line" style="font-size: 1.5em;"></i>
-                แชร์ไปทวงสัญญาใน LINE!
+                กดส่งให้ปาร์คกี้ดูใน LINE!
             </button>
         </div>
     </div>
 
     <script>
-        // --- (เก็บโค้ดเดิมส่วน Background, Page 1, 2, 3 ไว้เหมือนเดิม) ---
+        // --- 1. ส่วน Background หัวใจ ---
         function createHearts() {
             const bg = document.getElementById('heartBg');
             const symbols = ['❤️', '💖', '💕', '🥰', '🌹'];
@@ -300,6 +306,7 @@
         }
         createHearts();
 
+        // --- 2. ส่วนปุ่มหนี Page 1 ---
         function runAway() {
             const btn = document.getElementById('btnNo');
             const container = document.getElementById('page1');
@@ -323,6 +330,7 @@
             toPage.classList.add('fade-in');
         }
 
+        // --- 3. ส่วน Chatbot Page 2 ---
         let chatCount = 5;
         let chatHistory = [];
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
@@ -351,9 +359,12 @@
             }
             chatCount--;
             document.getElementById('chatCount').innerText = chatCount;
+            
+            // เมื่อคุยครบ 5 ครั้ง ให้ไปหน้า 3 และเริ่มสไลด์โชว์
             if (chatCount <= 0) {
                 setTimeout(() => {
                     switchPage('page2', 'page3');
+                    startSlideshow(); // เริ่มเล่นรูปภาพ
                     confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
                 }, 2000);
             }
@@ -373,14 +384,42 @@
             return div.id;
         }
 
+        // --- 4. ส่วน Slideshow Page 3 (ของใหม่!) ---
+        
+        // ⚠️ แก้ชื่อไฟล์รูปตรงนี้ให้ตรงกับในโฟลเดอร์ public ของคุณ
+        const myPhotos = [
+            "IMG_5906.JPG",  // รูปเดิม (รูปหลัก)
+            "photo2.jpg",    // รูปใหม่ที่ 1
+            "photo3.jpg"     // รูปใหม่ที่ 2
+        ];
+        
+        let photoIndex = 0;
+        
+        function startSlideshow() {
+            // เปลี่ยนรูปทุกๆ 3 วินาที (3000ms)
+            setInterval(() => {
+                const img = document.getElementById('slideshowImg');
+                // 1. ทำให้จางหายไปก่อน
+                img.style.opacity = 0;
+                
+                // 2. รอ 0.5 วินาที แล้วเปลี่ยนรูป + ทำให้ชัดขึ้นมาใหม่
+                setTimeout(() => {
+                    photoIndex = (photoIndex + 1) % myPhotos.length; // วนลูปรูปภาพ
+                    img.src = myPhotos[photoIndex];
+                    img.style.opacity = 1;
+                }, 500);
+                
+            }, 3000); 
+        }
+
         function goToGifts() { switchPage('page3', 'page4'); }
 
-        // === ส่วนที่แก้ไข: Logic หน้า 4 และ Voucher ===
+        // --- 5. ส่วนของขวัญและ LINE Share (อัปเกรด!) ---
         
-        let finalPrize = ""; // เก็บรางวัลไว้แชร์
+        let finalPrize = ""; 
 
         function openGift(element) {
-            if(finalPrize !== "") return; // ป้องกันการกดซ้ำ
+            if(finalPrize !== "") return; 
 
             element.classList.add('shaking');
 
@@ -390,52 +429,32 @@
                 const prizes = ['หมูกระทะ 🐷', 'ชาบู 🍲', 'อาหารญี่ปุ่น 🍣', 'MK สุกี้ 🍲', 'BBQ Plaza 🐲'];
                 finalPrize = prizes[Math.floor(Math.random() * prizes.length)];
                 
-                // 1. ซ่อนกล่องและข้อความเดิม
                 document.querySelector('.gift-container').style.display = 'none';
                 document.getElementById('giftSubtitle').style.display = 'none';
                 document.getElementById('giftTitle').innerText = "ยินดีด้วย! คุณได้รับ...";
 
-                // 2. เตรียมข้อมูล Voucher
                 const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
                 document.getElementById('voucherPrizeResult').innerText = finalPrize;
                 document.getElementById('voucherDate').innerText = today;
 
-                // 3. แสดง Voucher
-                const voucherCard = document.getElementById('voucherCard');
-                voucherCard.classList.remove('hidden');
-
-                // 4. ยิงพลุฉลอง
+                document.getElementById('voucherCard').classList.remove('hidden');
                 launchBigConfetti();
 
             }, 800);
         }
 
-        // ฟังก์ชันแชร์ไป LINE
-        async function shareToLine() {
-            // ข้อความที่จะแชร์
-            const shareText = `💖 Voucher Alert! 💖\n\nคุณโอเกะได้รับสิทธิ์กิน "${finalPrize}"\n\nปาร์คกี้ต้องพาไปกินภายในวันนี้ ห้ามเบี้ยว!\n\n(จาก Valentines App)`;
+        // ฟังก์ชันแชร์ LINE แบบ Direct Link (ชัวร์กว่า)
+        function shareToLine() {
+            const shareText = `💖 Voucher Alert! 💖\n\nคุณโอเกะจับฉลากได้กิน "${finalPrize}"\n\nปาร์คกี้ต้องพาไปกินภายในวันนี้ ห้ามเบี้ยว!\n\n(จาก Valentines App)`;
             
-            // ใช้ Web Share API (วิธีที่ทันสมัยที่สุด)
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Valentine Voucher 💖',
-                        text: shareText,
-                        // url: window.location.href // ถ้าขึ้น host จริงแล้วให้ uncomment บรรทัดนี้เพื่อแชร์ลิงก์ด้วย
-                    });
-                } catch (err) {
-                    // ถ้าUserกดยกเลิก หรือ Browser ไม่รองรับ
-                    console.log('Error sharing:', err);
-                    fallbackShare();
-                }
-            } else {
-                // Fallback สำหรับ Browser เก่าๆ
-                fallbackShare();
-            }
-        }
-
-        function fallbackShare() {
-            alert("Browser นี้แชร์อัตโนมัติไม่ได้จ้า 😅\n\nแนะนำให้แคปหน้าจอ Voucher นี้ไปทวงปาร์คกี้ใน LINE เลย!");
+            // แปลงข้อความให้เป็น URL Format
+            const encodedText = encodeURIComponent(shareText);
+            
+            // ลิงก์ยิงตรงเข้าแอป LINE
+            const lineUrl = `https://line.me/R/msg/text/?${encodedText}`;
+            
+            // เปิดหน้าใหม่
+            window.open(lineUrl, '_blank');
         }
 
         function launchBigConfetti() {
