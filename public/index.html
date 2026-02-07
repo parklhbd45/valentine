@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Project: VALENTINE PROTOCOL</title> <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>Booting V.A.L.E.N.T.I.N.E. OS...</title> <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&family=VT323&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,7 +11,8 @@
     <style>
         :root {
             --primary: #ff4d79; --secondary: #ffb3c6; --bg: #fff0f5; --line-color: #06C755;
-            --tech-green: #0f0; /* สีเขียว Terminal */
+            --neon-pink: #ff80ab; /* สีชมพูเทอร์มินัล */
+            --dark-bg: #2a0a16; /* สีพื้นหลังมืดๆ อมชมพู */
         }
 
         body {
@@ -21,26 +22,32 @@
             color: #d63384; user-select: none;
         }
 
-        /* === 📟 TECH BOOT SCREEN (ส่วนใหม่สุดล้ำ) 📟 === */
+        /* === 📟 CUTE TECH BOOT SCREEN (แก้ไขใหม่!) 📟 === */
         #boot-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; z-index: 9999; /* อยู่บนสุด */
-            display: flex; flex-direction: column; justify-content: flex-start;
-            align-items: flex-start; padding: 20px; box-sizing: border-box;
-            font-family: 'Share Tech Mono', monospace; /* ฟอนต์แนว Tech */
-            color: var(--tech-green);
+            background-color: var(--dark-bg); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; /* จัดกึ่งกลาง */
+            align-items: center; padding: 30px; box-sizing: border-box;
+            /* ใช้ฟอนต์ Pixel */
+            font-family: 'VT323', monospace; 
+            color: var(--neon-pink);
             overflow: hidden;
+            text-shadow: 0 0 8px var(--primary); /* เรืองแสงสีชมพู */
+        }
+        #terminal-container {
+            text-align: left; width: 100%; max-width: 600px;
         }
         #terminal-text {
-            text-align: left; white-space: pre-wrap; font-size: 14px; line-height: 1.5;
-            text-shadow: 0 0 5px var(--tech-green); z-index: 2;
+            white-space: pre-wrap; font-size: 24px; /* ตัวใหญ่ขึ้น */
+            line-height: 1.4;
         }
-        .blink-cursor { animation: blink 1s step-end infinite; }
+        .blink-cursor { animation: blink 0.8s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
         
-        /* Matrix Rain Effect */
-        #matrix-canvas {
-            position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.3;
+        /* ASCII Heart */
+        .ascii-heart {
+            font-size: 16px; line-height: 1.1; text-align: center; margin-top: 20px; color: var(--primary);
+            animation: heartbeat 1s infinite; display: none; /* ซ่อนก่อน */
         }
 
         /* --- (Styles เดิมทั้งหมด) --- */
@@ -105,8 +112,22 @@
 <body>
 
     <div id="boot-screen">
-        <canvas id="matrix-canvas"></canvas>
-        <div id="terminal-text"></div>
+        <div id="terminal-container">
+            <div id="terminal-text"></div>
+        </div>
+        <div class="ascii-heart" id="asciiHeart">
+            .<br>
+            .:.<br>
+            .:::::.<br>
+          .:::::::::.<br>
+         :::::::::::::<br>
+        ':::::::::::::'<br>
+          ':::::::::'<br>
+            ':::::'<br>
+              ':'<br>
+               .<br>
+               I LOVE YOU!
+        </div>
     </div>
 
     <div class="heart-bg" id="heartBg"></div>
@@ -194,50 +215,21 @@
 
     <script>
         // =========================================
-        // 📟 BOOT SEQUENCE & MATRIX LOGIC (ส่วนใหม่) 📟
+        // 📟 CUTE BOOT SEQUENCE LOGIC (แก้ไขใหม่) 📟
         // =========================================
         
-        // 1. Matrix Rain Effect
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#0F0'; // Green Text
-            ctx.font = fontSize + 'px monospace';
-            for (let i = 0; i < drops.length; i++) {
-                const text = katakana.charAt(Math.floor(Math.random() * katakana.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-        const matrixInterval = setInterval(drawMatrix, 30);
-
-        // 2. Terminal Typing Effect
-        // (ข้อความสคริปต์เท่ๆ เอาใจแฟนวิศวะ)
+        // ข้อความสคริปต์น่ารักๆ สไตล์ Tech
         const bootMessages = [
-            "> Initializing Valentine Protocol v2.14...",
-            "> Checking system integrity...",
-            "> CPU: OK | RAM: OK | HEART: OVERLOADED ❤️",
-            "> Connecting to Trillion Company secure server...",
-            "> Bypass firewall... Success.",
-            "> Locating target: 'Khun Oke' (Electrical Engineer)",
-            "> Target found. Analyzing cuteness levels...",
-            "> Cuteness level: OFF THE CHARTS! (Error 999)",
-            "> Loading boyfriend module (Parkky_AI)... Done.",
-            "> Preparing surprise assets... (Photos, Music, Gifts)",
-            "> All systems ready.",
-            "> EXECUTING LOVE SEQUENCE...",
+            "> Powering on V.A.L.E.N.T.I.N.E. Unit...",
+            "> Checking voltage... HIGH VOLTAGE OF LOVE! ⚡",
+            "> Calibrating cuteness sensors... Done.",
+            "> Target detected: 'Khun Oke' (The Best Engineer)",
+            "> Analyzing data... Result: 100% MATCH ❤️",
+            "> Loading boyfriend protocol (Parkky_v2.0)...",
+            "> [|||||||   ] 70% Loading hugs...",
+            "> [||||||||||] 100% Surprises ready!",
+            "> System status: KAWII DETECTED!",
+            "> Executing program: 'LOVE_YOU_FOREVER.exe'",
             " "
         ];
         
@@ -251,36 +243,40 @@
                 if (charIndex < currentLine.length) {
                     terminal.innerHTML += currentLine.charAt(charIndex);
                     charIndex++;
-                    setTimeout(typeWriter, 30); // ความเร็วพิมพ์
+                    setTimeout(typeWriter, 40); // พิมพ์ช้าลงนิดนึงให้ดูน่ารัก
                 } else {
                     terminal.innerHTML += "<br>";
                     lineIndex++;
                     charIndex = 0;
-                    setTimeout(typeWriter, 300); // รอระหว่างบรรทัด
+                    terminal.scrollTop = terminal.scrollHeight; // Auto scroll
+                    setTimeout(typeWriter, 400); 
                 }
             } else {
-                // พิมพ์เสร็จแล้ว -> จบการบูต
-                setTimeout(finishBoot, 1000);
+                // พิมพ์เสร็จแล้ว -> โชว์หัวใจ Pixel
+                document.getElementById('asciiHeart').style.display = 'block';
+                setTimeout(finishBoot, 2000); // โชว์หัวใจค้างไว้ 2 วิ
             }
-            terminal.innerHTML += '<span class="blink-cursor">_</span>'; // เพิ่ม cursor กระพริบ
+            // อัปเดต cursor ทุกครั้งที่พิมพ์
+            const existingCursor = document.querySelector('.blink-cursor');
+            if (existingCursor) existingCursor.remove();
+            terminal.innerHTML += '<span class="blink-cursor">_</span>';
         }
 
         function finishBoot() {
-            clearInterval(matrixInterval); // หยุด Matrix
             const bootScreen = document.getElementById('boot-screen');
-            bootScreen.style.transition = 'opacity 1s';
-            bootScreen.style.opacity = '0'; // ค่อยๆ จางหายไป
+            bootScreen.style.transition = 'opacity 1.5s ease-in-out'; // เฟดออกแบบนุ่มๆ
+            bootScreen.style.opacity = '0';
             
             setTimeout(() => {
-                bootScreen.style.display = 'none'; // ซ่อนถาวร
-                document.getElementById('page1').classList.add('active'); // โชว์หน้าแรก
-                document.getElementById('heartBg').classList.add('active'); // โชว์ BG หัวใจ
-            }, 1000);
+                bootScreen.style.display = 'none';
+                document.getElementById('page1').classList.add('active');
+                document.getElementById('heartBg').classList.add('active');
+            }, 1500);
         }
 
         // เริ่มรันระบบเมื่อโหลดเสร็จ
         window.onload = () => {
-            setTimeout(typeWriter, 500);
+            setTimeout(typeWriter, 800);
         };
 
 
