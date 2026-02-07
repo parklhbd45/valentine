@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For My Lovely Valentine</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -14,7 +15,6 @@
             --secondary: #ffb3c6;
             --bg: #fff0f5;
             --line-color: #06C755;
-            --wood-texture: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
         }
 
         body {
@@ -24,31 +24,23 @@
             margin: 0;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: #d63384;
-            position: relative;
-            perspective: 1000px;
+            user-select: none; /* ห้ามคลุมดำ */
         }
 
-        /* Background หัวใจ */
-        .heart-bg { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
-        .heart-particle { position: absolute; bottom: -20px; color: rgba(255, 77, 121, 0.3); animation: floatUp 10s linear infinite; font-size: 20px; }
-        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
-
+        /* Container หลัก */
         .container {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 90%; max-width: 500px; background: rgba(255, 255, 255, 0.95); padding: 30px;
             border-radius: 30px; box-shadow: 0 20px 60px rgba(255, 77, 121, 0.3);
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); backdrop-filter: blur(10px);
-            border: 3px solid white; box-sizing: border-box; max-height: 90vh; overflow-y: auto;
-            transform-style: preserve-3d; position: relative; overflow: hidden; /* สำคัญสำหรับม่าน */
+            transition: opacity 0.5s; backdrop-filter: blur(10px);
+            border: 3px solid white; box-sizing: border-box; z-index: 10;
         }
         
         h1 { font-size: 2em; margin-bottom: 20px; font-weight: 800; text-shadow: 2px 2px 0px #ffe6eb; }
-        .hidden { display: none !important; opacity: 0; }
+        .hidden { display: none !important; opacity: 0; pointer-events: none; }
         .fade-in { animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes popIn { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
 
         .btn { padding: 12px 30px; font-size: 1.2em; border: none; border-radius: 50px; cursor: pointer; margin: 10px; font-family: 'Kanit'; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; position: relative; }
         .btn-love { background: linear-gradient(45deg, #ff4d79, #ff8fa3); color: white; }
@@ -63,57 +55,44 @@
         .input-group { display: flex; gap: 10px; }
         input { flex: 1; padding: 12px; border-radius: 25px; border: 2px solid #ffd1dc; outline: none; font-family: 'Kanit'; }
 
-        /* Gallery 3D Styles */
-        .desk-surface { background-color: #f9f3f3; background-image: var(--wood-texture); padding: 25px; border-radius: 20px; box-shadow: inset 0 0 30px rgba(163, 122, 122, 0.1); margin-bottom: 25px; transform: rotateX(5deg); transform-style: preserve-3d; }
-        .gallery-grid-3d { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; padding: 10px; transform-style: preserve-3d; }
-        .photo-frame-3d { position: relative; aspect-ratio: 1 / 1.1; background: #fff; padding: 12px 12px 35px 12px; border: 4px solid #e0c097; border-radius: 4px; outline: 2px solid #fff; box-shadow: 0 8px 15px rgba(0,0,0,0.15), inset 0 0 10px rgba(0,0,0,0.05); transform: rotateX(15deg) rotateY(0deg) scale(0.95); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; }
-        .photo-frame-3d:hover { transform: rotateX(0deg) rotateY(0deg) scale(1.1) translateY(-20px); box-shadow: 0 25px 40px rgba(0,0,0,0.3); z-index: 10; border-color: var(--primary); }
-        .photo-frame-3d img { width: 100%; height: 100%; object-fit: cover; border: 1px solid #eee; }
-        .photo-caption { position: absolute; bottom: 8px; left: 0; width: 100%; text-align: center; font-family: 'Comic Sans MS', 'cursive', sans-serif; font-size: 0.9em; color: #777; }
-        .gallery-item-wrapper:nth-child(1) .photo-frame-3d { transform: rotateX(15deg) rotateZ(-3deg) scale(0.95); }
-        .gallery-item-wrapper:nth-child(2) .photo-frame-3d { transform: rotateX(15deg) rotateZ(2deg) scale(0.95); }
-        .gallery-item-wrapper:nth-child(3) .photo-frame-3d { transform: rotateX(15deg) rotateZ(4deg) scale(0.95); }
-        .gallery-item-wrapper:nth-child(4) .photo-frame-3d { transform: rotateX(15deg) rotateZ(-5deg) scale(0.95); }
-        .gallery-item-wrapper:hover .photo-frame-3d { transform: rotateX(0deg) rotateZ(0deg) scale(1.1) translateY(-20px) !important; }
+        /* === 3D World Canvas === */
+        #world-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; display: none; /* ซ่อนไว้ก่อน */
+        }
+        
+        /* UI ควบคุมการเดิน (สำหรับมือถือ) */
+        #joystick-ui {
+            position: fixed; bottom: 20px; right: 20px; z-index: 20;
+            display: none; /* โชว์เฉพาะตอนเดิน */
+            flex-direction: column; align-items: center; gap: 10px;
+        }
+        .control-row { display: flex; gap: 10px; }
+        .control-btn {
+            width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.5);
+            border: 2px solid white; backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center; font-size: 24px; color: var(--primary);
+            user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+        }
+        .control-btn:active { background: rgba(255, 77, 121, 0.8); color: white; }
 
-        /* === 🎭 CURTAIN STYLES (ส่วนใหม่) 🎭 === */
-        .curtain-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 100; pointer-events: none; /* ให้กดทะลุได้ตอนเปิดแล้ว */
-            display: flex;
+        #instruction-text {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.5); color: white; padding: 10px 20px; border-radius: 20px;
+            z-index: 20; display: none; font-size: 0.9em; pointer-events: none;
         }
-        .curtain-left, .curtain-right {
-            width: 50%; height: 100%;
-            background: #a00020; /* สีแดงกำมะหยี่ */
-            background-image: repeating-linear-gradient(90deg, #a00020 0px, #800010 20px, #a00020 40px);
-            box-shadow: inset -5px 0 10px rgba(0,0,0,0.5);
-            transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1); /* เปิดแบบนุ่มนวล */
-            position: relative;
-        }
-        /* เพิ่มพู่ห้อยสวยๆ */
-        .curtain-left::after, .curtain-right::after {
-            content: ''; position: absolute; bottom: 20%; width: 20px; height: 100px;
-            background: gold; border-radius: 10px; box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-        }
-        .curtain-left::after { right: 10px; }
-        .curtain-right::after { left: 10px; }
 
+        /* Concert & Curtain */
+        .curtain-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; pointer-events: none; display: flex; }
+        .curtain-left, .curtain-right { width: 50%; height: 100%; background: #a00020; transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1); position: relative; box-shadow: inset -5px 0 10px rgba(0,0,0,0.5); background-image: repeating-linear-gradient(90deg, #a00020 0px, #800010 20px, #a00020 40px); }
         .curtain-open .curtain-left { transform: translateX(-100%); }
         .curtain-open .curtain-right { transform: translateX(100%); }
-
-        /* กรอบ Youtube */
-        .video-frame {
-            border: 8px solid #333; border-radius: 10px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            width: 100%; aspect-ratio: 16 / 9;
-            background: #000;
-            margin-bottom: 20px;
-        }
+        .video-frame { border: 8px solid #333; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; aspect-ratio: 16 / 9; background: #000; margin-bottom: 20px; }
 
         /* Photo Page 3 */
         img.my-photo { width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 6px solid white; box-shadow: 0 10px 30px rgba(255, 77, 121, 0.3); margin-bottom: 20px; animation: heartbeat 1.5s infinite; }
         @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.05); } 30% { transform: scale(1); } 45% { transform: scale(1.05); } 60% { transform: scale(1); } }
-
+        
         /* Gift & Voucher */
         .gift-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
         .gift-box { width: 80px; height: 80px; background: linear-gradient(135deg, #ff4d79, #ff0040); color: white; display: flex; justify-content: center; align-items: center; border-radius: 15px; font-size: 2.5em; cursor: pointer; box-shadow: 0 8px 20px rgba(255, 0, 64, 0.3); transition: all 0.3s; position: relative; }
@@ -134,7 +113,17 @@
 </head>
 <body>
 
-    <div class="heart-bg" id="heartBg"></div>
+    <div id="world-container"></div>
+    
+    <div id="instruction-text">กดลูกศร ⬆️ ⬇️ เพื่อเดิน | เดินไปหาม่านสีแดง! ❤️</div>
+    <div id="joystick-ui">
+        <div class="control-btn" id="btnUp"><i class="fas fa-arrow-up"></i></div>
+        <div class="control-row">
+            <div class="control-btn" id="btnLeft"><i class="fas fa-arrow-left"></i></div>
+            <div class="control-btn" id="btnDown"><i class="fas fa-arrow-down"></i></div>
+            <div class="control-btn" id="btnRight"><i class="fas fa-arrow-right"></i></div>
+        </div>
+    </div>
 
     <div id="page1" class="container fade-in">
         <h1>แฟนๆ รักเค้ามั้ย? ❤️</h1>
@@ -158,20 +147,6 @@
         <p style="font-size: 0.8em; color: #aaa; margin-top: 10px;">เหลืออีก <span id="chatCount" style="font-weight:bold; color:var(--primary);">5</span> ครั้ง</p>
     </div>
 
-    <div id="pageGallery" class="container hidden" style="perspective: none;">
-        <h2>โต๊ะทำงานแห่งความทรงจำ 📸</h2>
-        <p style="color: #ff8fa3; margin-bottom: 20px;">(ลองเอานิ้วจิ้มที่รูปดูสิ!)</p>
-        <div class="desk-surface">
-            <div class="gallery-grid-3d">
-                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo1.jpg"><div class="photo-caption">วันแรกที่เจอกัน ❤️</div></div></div>
-                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo2.jpg"><div class="photo-caption">ไปเที่ยวด้วยกัน ✈️</div></div></div>
-                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo3.jpg"><div class="photo-caption">กินแหลก! 🍜</div></div></div>
-                <div class="gallery-item-wrapper"><div class="photo-frame-3d"><img src="photo4.jpg"><div class="photo-caption">รักนะเจ้าอ้วน 🐷</div></div></div>
-            </div>
-        </div>
-        <button class="btn btn-love" onclick="goToConcert()">ไปดูอะไรพิเศษ... 🎸</button>
-    </div>
-
     <div id="pageConcert" class="container hidden">
         <div class="curtain-container" id="curtains">
             <div class="curtain-left"></div>
@@ -180,17 +155,12 @@
 
         <h2>คอนเสิร์ตส่วนตัว 🎶</h2>
         <p style="color: #ff8fa3;">เพลงนี้เค้าตั้งใจเล่นให้ตะเองนะ</p>
-        
         <div class="video-frame">
             <iframe id="youtubeVideo" width="100%" height="100%" 
-                src="https://www.youtube.com/embed/TqN5YKD3dgw?enablejsapi=1" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" 
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
         </div>
-
-        <p style="font-size: 0.9em; margin-top: 10px;">(ถ้าคลิปไม่เล่น กด Play เลยจ้า)</p>
         <button class="btn btn-love" onclick="goToLovePage()">ฟังจบแล้วไปต่อ ❤️</button>
     </div>
 
@@ -226,9 +196,7 @@
     </div>
 
     <script>
-        function createHearts() { const bg = document.getElementById('heartBg'); const symbols = ['❤️', '💖', '💕', '🥰', '🌹']; for(let i=0; i<30; i++) { const heart = document.createElement('div'); heart.className = 'heart-particle'; heart.innerText = symbols[Math.floor(Math.random() * symbols.length)]; heart.style.left = Math.random() * 100 + '%'; heart.style.animationDuration = (Math.random() * 5 + 5) + 's'; heart.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(heart); } }
-        createHearts();
-
+        // --- ส่วน Background & Page 1 & Chat (เหมือนเดิม) ---
         function runAway() { const btn = document.getElementById('btnNo'); const container = document.getElementById('page1'); const x = Math.random() * (container.offsetWidth - 100); const y = Math.random() * (container.offsetHeight - 50); const texts = ["แน่ใจหรอ?", "มือลั่นป่าว?", "กดไม่ได้หรอก", "รักเค้าเถอะ", "ฮั่นแน่!"]; btn.innerText = texts[Math.floor(Math.random() * texts.length)]; btn.style.left = `${x}px`; btn.style.top = `${y}px`; }
         function handleLove() { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); setTimeout(() => { switchPage('page1', 'page2'); }, 1000); }
         function switchPage(fromId, toId) { document.getElementById(fromId).classList.add('hidden'); const toPage = document.getElementById(toId); toPage.classList.remove('hidden'); toPage.classList.add('fade-in'); }
@@ -240,28 +208,179 @@
             addMessage(msg, 'user'); input.value = ''; const loadingId = addMessage("กำลังพิมพ์...", 'bot', true);
             try { const res = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ message: msg, history: chatHistory }) }); const data = await res.json(); document.getElementById(loadingId).remove(); addMessage(data.reply, 'bot'); chatHistory.push({ role: "user", content: msg }); chatHistory.push({ role: "assistant", content: data.reply }); } catch (err) { document.getElementById(loadingId).remove(); addMessage("ระบบเหนื่อย... แต่เค้ารักตะเองนะ", 'bot'); }
             chatCount--; document.getElementById('chatCount').innerText = chatCount;
-            if (chatCount <= 0) { setTimeout(() => { switchPage('page2', 'pageGallery'); confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } }); }, 2000); }
+            if (chatCount <= 0) { 
+                setTimeout(() => { 
+                    document.getElementById('page2').classList.add('hidden'); // ซ่อนแชท
+                    start3DWorld(); // เริ่มเกมเดิน 3D!
+                }, 1500); 
+            }
         }
         function addMessage(text, sender, isLoading = false) { const chatBox = document.getElementById('chat-box'); const div = document.createElement('div'); div.className = `msg msg-${sender}`; div.innerText = text; if(isLoading) div.id = 'loading-' + Date.now(); chatBox.appendChild(div); const clear = document.createElement('div'); clear.style.clear = 'both'; chatBox.appendChild(clear); chatBox.scrollTop = chatBox.scrollHeight; return div.id; }
 
-        // --- Logic: Gallery -> Concert ---
-        function goToConcert() {
-            switchPage('pageGallery', 'pageConcert');
+        // ==========================================
+        // 🎮 3D WALKING LOGIC (THREE.JS) 🎮
+        // ==========================================
+        let scene, camera, renderer, player;
+        let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
+        let is3DActive = false;
+
+        function start3DWorld() {
+            is3DActive = true;
+            document.getElementById('world-container').style.display = 'block';
+            document.getElementById('joystick-ui').style.display = 'flex';
+            document.getElementById('instruction-text').style.display = 'block';
+
+            // 1. Setup Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xfff0f5); // สีชมพูอ่อน
+            scene.fog = new THREE.Fog(0xfff0f5, 1, 20); // หมอกจางๆ
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 1.6, 5); // สูง 1.6 เมตร (ระดับสายตา)
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('world-container').appendChild(renderer.domElement);
+
+            // 2. Add Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            // 3. Add Floor (พรมแดง)
+            const floorGeo = new THREE.PlaneGeometry(10, 50);
+            const floorMat = new THREE.MeshBasicMaterial({ color: 0xffb3c6 });
+            const floor = new THREE.Mesh(floorGeo, floorMat);
+            floor.rotation.x = -Math.PI / 2;
+            scene.add(floor);
+
+            // 4. Load Photos & Create Frames
+            const textureLoader = new THREE.TextureLoader();
             
-            // รอ 0.5 วิ แล้วสั่งเปิดม่าน!
-            setTimeout(() => {
-                document.getElementById('curtains').classList.add('curtain-open');
-                // หมายเหตุ: Auto-play อาจไม่ติดในบาง Browser (ต้องกด Play เอง)
-            }, 500);
+            // ฟังก์ชันสร้างกรอบรูป
+            function createFrame(imgPath, x, z, rotationY) {
+                textureLoader.load(imgPath, (texture) => {
+                    const aspect = texture.image.width / texture.image.height;
+                    const geo = new THREE.BoxGeometry(2, 2/aspect, 0.1); // ปรับขนาดตามรูป
+                    const mat = new THREE.MeshBasicMaterial({ map: texture });
+                    const mesh = new THREE.Mesh(geo, mat);
+                    mesh.position.set(x, 1.6, z);
+                    mesh.rotation.y = rotationY;
+                    
+                    // กรอบขาว
+                    const frameGeo = new THREE.BoxGeometry(2.2, (2/aspect)+0.2, 0.05);
+                    const frameMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+                    const frame = new THREE.Mesh(frameGeo, frameMat);
+                    frame.position.set(0, 0, -0.05);
+                    mesh.add(frame);
+                    
+                    scene.add(mesh);
+                });
+            }
+
+            // วางรูป 4 รูป (ซ้าย-ขวา สลับกัน)
+            createFrame('photo1.jpg', -2.5, 2, 0.5);  // ซ้าย
+            createFrame('photo2.jpg', 2.5, 0, -0.5);  // ขวา
+            createFrame('photo3.jpg', -2.5, -3, 0.5); // ซ้าย
+            createFrame('photo4.jpg', 2.5, -6, -0.5); // ขวา
+
+            // 5. Create "The End" Curtain (เส้นชัย)
+            const endGeo = new THREE.BoxGeometry(8, 5, 0.1);
+            const endMat = new THREE.MeshBasicMaterial({ color: 0xa00020 }); // สีแดง
+            const endWall = new THREE.Mesh(endGeo, endMat);
+            endWall.position.set(0, 2.5, -10); // อยู่ที่สุดทาง
+            scene.add(endWall);
+
+            // Text บนม่าน
+            // (Three.js สร้าง text ยาก ข้ามไปใช้ logic ชนกำแพงแทน)
+
+            // 6. Controls
+            document.addEventListener('keydown', (e) => {
+                switch(e.code) {
+                    case 'ArrowUp': case 'KeyW': moveForward = true; break;
+                    case 'ArrowDown': case 'KeyS': moveBackward = true; break;
+                    case 'ArrowLeft': case 'KeyA': moveLeft = true; break;
+                    case 'ArrowRight': case 'KeyD': moveRight = true; break;
+                }
+            });
+            document.addEventListener('keyup', (e) => {
+                switch(e.code) {
+                    case 'ArrowUp': case 'KeyW': moveForward = false; break;
+                    case 'ArrowDown': case 'KeyS': moveBackward = false; break;
+                    case 'ArrowLeft': case 'KeyA': moveLeft = false; break;
+                    case 'ArrowRight': case 'KeyD': moveRight = false; break;
+                }
+            });
+
+            // Mobile Touch Controls
+            const btnUp = document.getElementById('btnUp');
+            const btnDown = document.getElementById('btnDown');
+            const btnLeft = document.getElementById('btnLeft');
+            const btnRight = document.getElementById('btnRight');
+
+            const handleTouch = (btn, dir, val) => {
+                btn.addEventListener('touchstart', (e) => { e.preventDefault(); dir = true; });
+                btn.addEventListener('touchend', (e) => { e.preventDefault(); dir = false; });
+                // Hacky assignment because primitives are passed by value
+                if(btn.id === 'btnUp') { btn.addEventListener('touchstart', ()=>moveForward=true); btn.addEventListener('touchend', ()=>moveForward=false); }
+                if(btn.id === 'btnDown') { btn.addEventListener('touchstart', ()=>moveBackward=true); btn.addEventListener('touchend', ()=>moveBackward=false); }
+                if(btn.id === 'btnLeft') { btn.addEventListener('touchstart', ()=>moveLeft=true); btn.addEventListener('touchend', ()=>moveLeft=false); }
+                if(btn.id === 'btnRight') { btn.addEventListener('touchstart', ()=>moveRight=true); btn.addEventListener('touchend', ()=>moveRight=false); }
+            };
+            handleTouch(btnUp); handleTouch(btnDown); handleTouch(btnLeft); handleTouch(btnRight);
+
+            animate3D();
         }
 
+        function animate3D() {
+            if (!is3DActive) return;
+            requestAnimationFrame(animate3D);
+
+            // Movement Logic
+            const speed = 0.1;
+            const rotSpeed = 0.03;
+
+            if (moveForward) camera.translateZ(-speed);
+            if (moveBackward) camera.translateZ(speed);
+            if (moveLeft) camera.rotateY(rotSpeed);
+            if (moveRight) camera.rotateY(-rotSpeed);
+            
+            // Lock Height (ไม่ให้บิน)
+            camera.position.y = 1.6;
+
+            // Check Win Condition (เดินถึงเส้นชัย Z < -8)
+            if (camera.position.z < -8) {
+                is3DActive = false;
+                document.getElementById('world-container').style.display = 'none'; // ปิด 3D
+                document.getElementById('joystick-ui').style.display = 'none';
+                document.getElementById('instruction-text').style.display = 'none';
+                
+                // เข้าหน้า Concert
+                const concertPage = document.getElementById('pageConcert');
+                concertPage.classList.remove('hidden');
+                concertPage.classList.add('fade-in');
+                
+                // เปิดม่าน
+                setTimeout(() => { document.getElementById('curtains').classList.add('curtain-open'); }, 500);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Window Resize Handle
+        window.addEventListener('resize', () => {
+            if(camera && renderer) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        });
+
+        // --- Functions Page 3 & 4 (เหมือนเดิม) ---
         function goToLovePage() { switchPage('pageConcert', 'page3'); }
         function goToGifts() { switchPage('page3', 'page4'); }
-
         let finalPrize = ""; 
-        function openGift(element) { if(finalPrize !== "") return; element.classList.add('shaking'); setTimeout(() => { element.classList.remove('shaking'); const prizes = ['หมูกระทะ 🐷', 'ชาบู 🍲', 'อาหารญี่ปุ่น 🍣', 'MK สุกี้ 🍲', 'BBQ Plaza 🐲']; finalPrize = prizes[Math.floor(Math.random() * prizes.length)]; document.querySelector('.gift-container').style.display = 'none'; document.getElementById('giftSubtitle').style.display = 'none'; document.getElementById('giftTitle').innerText = "ยินดีด้วย! คุณได้รับ..."; const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }); document.getElementById('voucherPrizeResult').innerText = finalPrize; document.getElementById('voucherDate').innerText = today; document.getElementById('voucherCard').classList.remove('hidden'); launchBigConfetti(); }, 800); }
+        function openGift(element) { if(finalPrize !== "") return; element.classList.add('shaking'); setTimeout(() => { element.classList.remove('shaking'); const prizes = ['หมูกระทะ 🐷', 'ชาบู 🍲', 'อาหารญี่ปุ่น 🍣', 'MK สุกี้ 🍲', 'BBQ Plaza 🐲']; finalPrize = prizes[Math.floor(Math.random() * prizes.length)]; document.querySelector('.gift-container').style.display = 'none'; document.getElementById('giftSubtitle').style.display = 'none'; document.getElementById('giftTitle').innerText = "ยินดีด้วย! คุณได้รับ..."; const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }); document.getElementById('voucherPrizeResult').innerText = finalPrize; document.getElementById('voucherDate').innerText = today; document.getElementById('voucherCard').classList.remove('hidden'); confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }, 800); }
         function shareToLine() { const shareText = `💖 Voucher Alert! 💖\n\nคุณโอเกะจับฉลากได้กิน "${finalPrize}"\n\nปาร์คกี้ต้องพาไปกินภายในวันนี้ ห้ามเบี้ยว!\n\n(จาก Valentines App)`; const encodedText = encodeURIComponent(shareText); const lineUrl = `https://line.me/R/msg/text/?${encodedText}`; window.open(lineUrl, '_blank'); }
-        function launchBigConfetti() { var duration = 3 * 1000; var end = Date.now() + duration; (function frame() { confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } }); confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } }); if (Date.now() < end) requestAnimationFrame(frame); }()); }
     </script>
 </body>
 </html>
