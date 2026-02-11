@@ -30,7 +30,6 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             overflow: hidden; transition: opacity 1.5s ease-in-out;
         }
-        /* Background floating hearts */
         .boot-hearts { position: absolute; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 0; }
         .boot-heart-float {
             position: absolute; bottom: -40px; opacity: 0;
@@ -38,11 +37,9 @@
         }
         @keyframes bootHeartRise {
             0% { opacity: 0; transform: translateY(0) rotate(0deg) scale(0.8); }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
+            10% { opacity: 0.5; } 90% { opacity: 0.5; }
             100% { opacity: 0; transform: translateY(-110vh) rotate(360deg) scale(1.2); }
         }
-        /* Ground / floor */
         .sumikko-ground {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
             background: linear-gradient(180deg, #FFDDE8 0%, #FFD0DF 100%);
@@ -52,12 +49,9 @@
             content: ''; position: absolute; top: -5px; left: 0; width: 100%; height: 10px;
             background: repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.3) 30px, rgba(255,255,255,0.3) 32px);
         }
-        /* Stage */
-        .sumikko-stage {
-            position: relative; width: 90%; max-width: 420px; height: 300px; z-index: 1;
-        }
+        .sumikko-stage { position: relative; width: 90%; max-width: 420px; height: 300px; z-index: 1; }
 
-        /* === Shirokuma (White Bear - Parkky) === */
+        /* Shirokuma (boot) */
         .shirokuma-wrapper {
             position: absolute; bottom: 30px; left: 0;
             transition: transform 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -72,112 +66,141 @@
             border-radius: 50% 50% 46% 46%;
             box-shadow: 0 4px 12px rgba(0,0,0,0.06), inset 0 -3px 8px rgba(0,0,0,0.03);
         }
-        .shirokuma-ear {
-            width: 28px; height: 26px;
-            background: radial-gradient(circle at 50% 50%, #FFFFFF, #FFF8F0);
-            border-radius: 50%;
-            position: absolute; top: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-        }
-        .shirokuma-ear.left { left: 12px; }
-        .shirokuma-ear.right { right: 12px; }
-        .shirokuma-ear-inner {
-            width: 14px; height: 12px; background: #FFD4CC; border-radius: 50%;
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        }
-        .shirokuma-eye {
-            width: 6px; height: 7px; background: #2D2D2D; border-radius: 50%;
-            position: absolute; top: 55px;
-        }
-        .shirokuma-eye.left { left: 32px; }
-        .shirokuma-eye.right { right: 32px; }
-        .shirokuma-nose {
-            width: 0; height: 0;
-            border-left: 5px solid transparent; border-right: 5px solid transparent;
-            border-top: 6px solid #C4A882;
-            position: absolute; top: 68px; left: 50%; transform: translateX(-50%);
-        }
-        .shirokuma-blush {
-            width: 18px; height: 10px; background: rgba(255,150,150,0.35); border-radius: 50%;
-            position: absolute; top: 66px;
-        }
-        .shirokuma-blush.left { left: 12px; }
-        .shirokuma-blush.right { right: 12px; }
-        .shirokuma-arm {
-            width: 22px; height: 16px;
-            background: radial-gradient(circle, #FFFFFF, #FFF8F0);
-            border-radius: 50%; position: absolute; bottom: 40px;
-        }
-        .shirokuma-arm.left { left: 0; transform: rotate(15deg); }
-        .shirokuma-arm.right { right: 0; transform: rotate(-15deg); }
-        .char-name {
-            text-align: center; font-family: 'Kanit', sans-serif; font-size: 12px;
-            color: #d63384; font-weight: 600; position: absolute; bottom: 2px; width: 100%;
-        }
+        .shirokuma-ear { width: 28px; height: 26px; background: radial-gradient(circle at 50% 50%, #FFFFFF, #FFF8F0); border-radius: 50%; position: absolute; top: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+        .shirokuma-ear.left { left: 12px; } .shirokuma-ear.right { right: 12px; }
+        .shirokuma-ear-inner { width: 14px; height: 12px; background: #FFD4CC; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .shirokuma-eye { width: 6px; height: 7px; background: #2D2D2D; border-radius: 50%; position: absolute; top: 55px; }
+        .shirokuma-eye.left { left: 32px; } .shirokuma-eye.right { right: 32px; }
+        .shirokuma-nose { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #C4A882; position: absolute; top: 68px; left: 50%; transform: translateX(-50%); }
+        .shirokuma-blush { width: 18px; height: 10px; background: rgba(255,150,150,0.35); border-radius: 50%; position: absolute; top: 66px; }
+        .shirokuma-blush.left { left: 12px; } .shirokuma-blush.right { right: 12px; }
+        .shirokuma-arm { width: 22px; height: 16px; background: radial-gradient(circle, #FFFFFF, #FFF8F0); border-radius: 50%; position: absolute; bottom: 40px; }
+        .shirokuma-arm.left { left: 0; transform: rotate(15deg); } .shirokuma-arm.right { right: 0; transform: rotate(-15deg); }
+        .char-name { text-align: center; font-family: 'Kanit', sans-serif; font-size: 12px; color: #d63384; font-weight: 600; position: absolute; bottom: 2px; width: 100%; }
 
-        /* === Pengin? (Oke) === */
+        /* Pengin? (boot) */
         .pengin-wrapper { position: absolute; bottom: 30px; right: 10%; }
         .pengin-char { position: relative; width: 95px; height: 130px; }
-        .pengin-body {
-            position: absolute; bottom: 22px; left: 5px;
-            width: 85px; height: 95px;
-            background: radial-gradient(ellipse at 40% 30%, #D5F0DC 0%, #C8E6D0 60%, #B8DBBE 100%);
-            border-radius: 48% 48% 44% 44%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06), inset 0 -3px 8px rgba(0,0,0,0.03);
-        }
-        .pengin-eye {
-            width: 6px; height: 7px; background: #2D2D2D; border-radius: 50%;
-            position: absolute; top: 42px;
-        }
-        .pengin-eye.left { left: 23px; }
-        .pengin-eye.right { right: 23px; }
-        .pengin-beak {
-            width: 0; height: 0;
-            border-left: 6px solid transparent; border-right: 6px solid transparent;
-            border-top: 8px solid #F5C542;
-            position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
-        }
-        .pengin-blush {
-            width: 16px; height: 9px; background: rgba(255,150,150,0.35); border-radius: 50%;
-            position: absolute; top: 53px;
-        }
-        .pengin-blush.left { left: 6px; }
-        .pengin-blush.right { right: 6px; }
-        .pengin-arm {
-            width: 18px; height: 14px;
-            background: radial-gradient(circle, #D5F0DC, #C8E6D0);
-            border-radius: 50%; position: absolute; bottom: 35px;
-        }
-        .pengin-arm.left { left: 0; transform: rotate(15deg); }
-        .pengin-arm.right { right: 0; transform: rotate(-15deg); }
+        .pengin-body { position: absolute; bottom: 22px; left: 5px; width: 85px; height: 95px; background: radial-gradient(ellipse at 40% 30%, #D5F0DC 0%, #C8E6D0 60%, #B8DBBE 100%); border-radius: 48% 48% 44% 44%; box-shadow: 0 4px 12px rgba(0,0,0,0.06), inset 0 -3px 8px rgba(0,0,0,0.03); }
+        .pengin-eye { width: 6px; height: 7px; background: #2D2D2D; border-radius: 50%; position: absolute; top: 42px; }
+        .pengin-eye.left { left: 23px; } .pengin-eye.right { right: 23px; }
+        .pengin-beak { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #F5C542; position: absolute; top: 55px; left: 50%; transform: translateX(-50%); }
+        .pengin-blush { width: 16px; height: 9px; background: rgba(255,150,150,0.35); border-radius: 50%; position: absolute; top: 53px; }
+        .pengin-blush.left { left: 6px; } .pengin-blush.right { right: 6px; }
+        .pengin-arm { width: 18px; height: 14px; background: radial-gradient(circle, #D5F0DC, #C8E6D0); border-radius: 50%; position: absolute; bottom: 35px; }
+        .pengin-arm.left { left: 0; transform: rotate(15deg); } .pengin-arm.right { right: 0; transform: rotate(-15deg); }
 
         /* Kiss effects */
         .kiss-hearts-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
-        .kiss-heart-pop {
-            position: absolute; font-size: 24px; opacity: 0; pointer-events: none;
-        }
-        .kiss-heart-pop.active {
-            animation: kissHeartFloat 2s ease-out forwards;
-        }
-        @keyframes kissHeartFloat {
-            0% { opacity: 0; transform: scale(0) translateY(0); }
-            25% { opacity: 1; transform: scale(1.3) translateY(-20px); }
-            100% { opacity: 0; transform: scale(0.6) translateY(-100px); }
-        }
-        /* Valentine message */
+        .kiss-heart-pop { position: absolute; font-size: 24px; opacity: 0; pointer-events: none; }
+        .kiss-heart-pop.active { animation: kissHeartFloat 2s ease-out forwards; }
+        @keyframes kissHeartFloat { 0% { opacity: 0; transform: scale(0) translateY(0); } 25% { opacity: 1; transform: scale(1.3) translateY(-20px); } 100% { opacity: 0; transform: scale(0.6) translateY(-100px); } }
         .valentine-text { text-align: center; margin-top: 5px; position: relative; z-index: 2; }
-        .valentine-msg {
-            font-family: 'Kanit', sans-serif; font-size: 1.8em; font-weight: 800;
-            color: #d63384; opacity: 0; text-shadow: 2px 2px 0px #ffe6eb;
-        }
-        .valentine-sub {
-            font-family: 'Kanit', sans-serif; font-size: 1em; color: #ff8fa3; opacity: 0; margin-top: 2px;
-        }
+        .valentine-msg { font-family: 'Kanit', sans-serif; font-size: 1.8em; font-weight: 800; color: #d63384; opacity: 0; text-shadow: 2px 2px 0px #ffe6eb; }
+        .valentine-sub { font-family: 'Kanit', sans-serif; font-size: 1em; color: #ff8fa3; opacity: 0; margin-top: 2px; }
         .valentine-msg.show { animation: fadeSlideUp 0.8s ease-out forwards; }
         .valentine-sub.show { animation: fadeSlideUp 0.8s ease-out 0.3s forwards; }
-
         @keyframes bobWalk { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes fadeSlideUp { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* === MASCOTS (Mini Sumikko in corners) === */
+        .mascots {
+            position: fixed; bottom: 10px; left: 0; width: 100%;
+            display: none; justify-content: space-between; align-items: flex-end;
+            padding: 0 12px; box-sizing: border-box;
+            z-index: 18; pointer-events: none;
+        }
+        .mascots.visible { display: flex; }
+        .mascot {
+            transform: translateY(80px);
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        .mascots.visible .mascot { transform: translateY(0); }
+        /* Mini Shirokuma */
+        .mini-shiro { width: 50px; height: 60px; position: relative; }
+        .mini-shiro-body { width: 44px; height: 46px; background: radial-gradient(ellipse at 40% 30%, #FFF 0%, #FFF8F0 60%, #F5EDE3 100%); border-radius: 50% 50% 46% 46%; position: absolute; bottom: 0; left: 3px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .mini-shiro-ear { width: 12px; height: 11px; background: #FFF8F0; border-radius: 50%; position: absolute; top: 2px; }
+        .mini-shiro-ear.l { left: 7px; } .mini-shiro-ear.r { right: 7px; }
+        .mini-shiro-ear-in { width: 6px; height: 5px; background: #FFD4CC; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+        .mini-shiro-eye { width: 3px; height: 3.5px; background: #2D2D2D; border-radius: 50%; position: absolute; top: 18px; }
+        .mini-shiro-eye.l { left: 12px; } .mini-shiro-eye.r { right: 12px; }
+        .mini-shiro-nose { width: 0; height: 0; border-left: 2px solid transparent; border-right: 2px solid transparent; border-top: 3px solid #C4A882; position: absolute; top: 24px; left: 50%; transform: translateX(-50%); }
+        .mini-shiro-blush { width: 7px; height: 4px; background: rgba(255,150,150,0.4); border-radius: 50%; position: absolute; top: 23px; }
+        .mini-shiro-blush.l { left: 4px; } .mini-shiro-blush.r { right: 4px; }
+        /* Mini Pengin */
+        .mini-pengin { width: 42px; height: 52px; position: relative; }
+        .mini-pengin-body { width: 38px; height: 42px; background: radial-gradient(ellipse at 40% 30%, #D5F0DC 0%, #C8E6D0 60%, #B8DBBE 100%); border-radius: 48% 48% 44% 44%; position: absolute; bottom: 0; left: 2px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .mini-pengin-eye { width: 3px; height: 3.5px; background: #2D2D2D; border-radius: 50%; position: absolute; top: 15px; }
+        .mini-pengin-eye.l { left: 10px; } .mini-pengin-eye.r { right: 10px; }
+        .mini-pengin-bk { width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-top: 4px solid #F5C542; position: absolute; top: 21px; left: 50%; transform: translateX(-50%); }
+        .mini-pengin-blush { width: 6px; height: 3px; background: rgba(255,150,150,0.4); border-radius: 50%; position: absolute; top: 20px; }
+        .mini-pengin-blush.l { left: 3px; } .mini-pengin-blush.r { right: 3px; }
+        /* Mascot reaction animations */
+        .mascot-bounce .mini-shiro, .mascot-bounce .mini-pengin { animation: mBounce 0.6s ease infinite; }
+        .mascot-shy .mini-shiro, .mascot-shy .mini-pengin { animation: mShy 2s ease-in-out infinite; }
+        .mascot-music .mini-shiro, .mascot-music .mini-pengin { animation: mMusic 0.8s ease-in-out infinite; }
+        .mascot-love .mini-shiro, .mascot-love .mini-pengin { animation: mLove 1s ease-in-out infinite; }
+        .mascot-excited .mini-shiro, .mascot-excited .mini-pengin { animation: mExcited 0.4s ease infinite; }
+        .mascot-emotional .mini-shiro, .mascot-emotional .mini-pengin { animation: mEmotional 1.5s ease-in-out infinite; }
+        @keyframes mBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes mShy { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+        @keyframes mMusic { 0%,100% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-3px) rotate(-4deg); } 75% { transform: translateX(3px) rotate(4deg); } }
+        @keyframes mLove { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        @keyframes mExcited { 0%,100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-6px) rotate(-5deg); } 75% { transform: translateY(-6px) rotate(5deg); } }
+        @keyframes mEmotional { 0%,100% { transform: translateY(0); } 30% { transform: translateY(-3px); } 60% { transform: translateY(0); } }
+        /* Mascot floating hearts */
+        .mascot-mini-hearts { position: absolute; top: -10px; left: 0; width: 100%; pointer-events: none; display: none; }
+        .mascot-love .mascot-mini-hearts { display: block; }
+        .mascot-mini-heart { position: absolute; font-size: 10px; animation: mHeartPop 2s ease-out infinite; opacity: 0; }
+        .mascot-mini-heart:nth-child(1) { left: 5px; animation-delay: 0s; }
+        .mascot-mini-heart:nth-child(2) { left: 20px; animation-delay: 0.7s; }
+        .mascot-mini-heart:nth-child(3) { left: 35px; animation-delay: 1.4s; }
+        @keyframes mHeartPop { 0% { opacity: 0; transform: translateY(0) scale(0.5); } 30% { opacity: 1; transform: translateY(-8px) scale(1); } 100% { opacity: 0; transform: translateY(-25px) scale(0.5); } }
+
+        /* === LOVE LETTER === */
+        .envelope-wrapper {
+            position: relative; width: 260px; height: 170px;
+            margin: 10px auto 15px; cursor: pointer; perspective: 800px;
+        }
+        .envelope-body {
+            position: absolute; bottom: 0; width: 100%; height: 120px;
+            background: linear-gradient(180deg, #F5E0C0, #EDD5B5);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .envelope-flap {
+            position: absolute; top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 130px solid transparent;
+            border-right: 130px solid transparent;
+            border-top: 80px solid #E8D0B0;
+            transform-origin: top center;
+            transition: transform 0.8s ease-in-out;
+            z-index: 3;
+        }
+        .envelope-seal {
+            position: absolute; top: 55px; left: 50%;
+            transform: translateX(-50%); font-size: 30px; z-index: 4;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+        }
+        .envelope-wrapper.opened .envelope-flap { transform: rotateX(180deg); }
+        .envelope-wrapper.opened .envelope-seal { opacity: 0; transform: translateX(-50%) scale(0); }
+        .letter-tap-hint { font-size: 0.85em; color: #ff8fa3; animation: pulse 2s ease-in-out infinite; margin: 5px 0; }
+        @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+        .letter-card {
+            background: white; border: 1px solid #FFE0E8; border-radius: 12px;
+            padding: 18px 20px; margin: 0 auto; max-width: 320px;
+            box-shadow: 0 5px 20px rgba(255,77,121,0.1);
+            opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out;
+            pointer-events: none;
+        }
+        .letter-card.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .letter-greeting { color: #d63384; font-weight: 600; font-size: 1em; margin-bottom: 8px; text-align: left; }
+        .letter-content { font-size: 0.88em; color: #555; line-height: 1.9; text-align: left; }
+        .letter-signature { text-align: right; color: #d63384; font-weight: 600; margin-top: 10px; font-size: 0.95em; }
+        #pageLetter.container { max-height: 92vh; overflow-y: auto; }
 
         /* === CONTAINER === */
         .container {
@@ -247,50 +270,37 @@
 </head>
 <body>
 
-    <!-- === BOOT SCREEN: Sumikko Gurashi Animation === -->
+    <!-- BOOT SCREEN -->
     <div id="boot-screen">
         <div class="boot-hearts" id="bootHearts"></div>
         <div class="sumikko-ground"></div>
-
         <div class="sumikko-stage" id="sumikkoStage">
-            <!-- Shirokuma (Parkky) -->
             <div class="shirokuma-wrapper" id="shirokuma">
                 <div class="shirokuma-char">
                     <div class="shirokuma-ear left"><div class="shirokuma-ear-inner"></div></div>
                     <div class="shirokuma-ear right"><div class="shirokuma-ear-inner"></div></div>
                     <div class="shirokuma-body">
-                        <div class="shirokuma-eye left"></div>
-                        <div class="shirokuma-eye right"></div>
+                        <div class="shirokuma-eye left"></div><div class="shirokuma-eye right"></div>
                         <div class="shirokuma-nose"></div>
-                        <div class="shirokuma-blush left"></div>
-                        <div class="shirokuma-blush right"></div>
+                        <div class="shirokuma-blush left"></div><div class="shirokuma-blush right"></div>
                     </div>
-                    <div class="shirokuma-arm left"></div>
-                    <div class="shirokuma-arm right"></div>
+                    <div class="shirokuma-arm left"></div><div class="shirokuma-arm right"></div>
                     <div class="char-name">Parkky</div>
                 </div>
             </div>
-
-            <!-- Pengin? (Oke) -->
             <div class="pengin-wrapper" id="pengin">
                 <div class="pengin-char">
                     <div class="pengin-body">
-                        <div class="pengin-eye left"></div>
-                        <div class="pengin-eye right"></div>
+                        <div class="pengin-eye left"></div><div class="pengin-eye right"></div>
                         <div class="pengin-beak"></div>
-                        <div class="pengin-blush left"></div>
-                        <div class="pengin-blush right"></div>
+                        <div class="pengin-blush left"></div><div class="pengin-blush right"></div>
                     </div>
-                    <div class="pengin-arm left"></div>
-                    <div class="pengin-arm right"></div>
+                    <div class="pengin-arm left"></div><div class="pengin-arm right"></div>
                     <div class="char-name">Oke</div>
                 </div>
             </div>
-
-            <!-- Kiss hearts overlay -->
             <div class="kiss-hearts-container" id="kissHearts"></div>
         </div>
-
         <div class="valentine-text">
             <div class="valentine-msg" id="vMsg">Happy Valentine's Day</div>
             <div class="valentine-sub" id="vSub">Parkky & Oke</div>
@@ -299,7 +309,6 @@
 
     <div class="heart-bg" id="heartBg"></div>
     <div id="world-container"></div>
-
     <div id="instruction-text">กดลูกศร ⬆️ ⬇️ เพื่อเดิน | เดินไปหาม่านสีแดง! ❤️</div>
     <div id="joystick-ui">
         <div class="control-btn" id="btnUp"><i class="fas fa-arrow-up"></i></div>
@@ -334,8 +343,7 @@
 
     <div id="pageConcert" class="container hidden">
         <div class="curtain-container" id="curtains">
-            <div class="curtain-left"></div>
-            <div class="curtain-right"></div>
+            <div class="curtain-left"></div><div class="curtain-right"></div>
         </div>
         <h2>คอนเสิร์ตส่วนตัว 🎶</h2>
         <p style="color: #ff8fa3;">เพลงนี้เค้าตั้งใจเล่นให้ตะเองนะ</p>
@@ -353,7 +361,28 @@
         <h1>รักแฟนๆ มากนะ!</h1>
         <p style="font-size: 1.2em;">เจ้าตดเหม็นของเค้า 💨❤️</p>
         <br>
-        <button class="btn btn-love" onclick="goToGifts()">ไปรับของขวัญ 🎁</button>
+        <button class="btn btn-love" onclick="goToLetter()">อ่านจดหมายรัก 💌</button>
+    </div>
+
+    <!-- LOVE LETTER PAGE -->
+    <div id="pageLetter" class="container hidden">
+        <h2>จดหมายรัก 💌</h2>
+        <p class="letter-tap-hint" id="letterHint">แตะซองจดหมายเพื่อเปิดอ่าน</p>
+        <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+            <div class="envelope-flap"></div>
+            <div class="envelope-seal">💌</div>
+            <div class="envelope-body"></div>
+        </div>
+        <div class="letter-card" id="letterCard">
+            <div class="letter-greeting">ถึง ที่รัก Oke 💕</div>
+            <div class="letter-content">
+                ขอบคุณสำหรับทุกอย่าง และขอบคุณที่คอยดูแลปาร์คกี้มาตลอด รักๆนะครับ
+                <br><br>
+                อยากให้ที่รักมีความสุขในทุกๆวัน ยิ้มบ่อยๆ สนุกกับชีวิตในแต่ละวันให้เต็มที่ ปาร์คกี้คอยซัพพอร์ตอยู่ข้างๆเสมอครับ
+            </div>
+            <div class="letter-signature">ด้วยรัก, ปาร์คกี้ 🤍</div>
+        </div>
+        <button class="btn btn-love" id="letterNextBtn" style="display:none;" onclick="goToGifts()">ไปรับของขวัญ 🎁</button>
     </div>
 
     <div id="page4" class="container hidden">
@@ -379,10 +408,42 @@
         </div>
     </div>
 
-    <script>
-        // === BOOT SCREEN: Sumikko Gurashi Animation ===
+    <!-- MASCOTS (Mini Sumikko in corners) -->
+    <div class="mascots" id="mascots">
+        <div class="mascot" id="mascotShiro">
+            <div class="mascot-mini-hearts">
+                <span class="mascot-mini-heart">💖</span>
+                <span class="mascot-mini-heart">💕</span>
+                <span class="mascot-mini-heart">❤️</span>
+            </div>
+            <div class="mini-shiro">
+                <div class="mini-shiro-ear l"><div class="mini-shiro-ear-in"></div></div>
+                <div class="mini-shiro-ear r"><div class="mini-shiro-ear-in"></div></div>
+                <div class="mini-shiro-body">
+                    <div class="mini-shiro-eye l"></div><div class="mini-shiro-eye r"></div>
+                    <div class="mini-shiro-nose"></div>
+                    <div class="mini-shiro-blush l"></div><div class="mini-shiro-blush r"></div>
+                </div>
+            </div>
+        </div>
+        <div class="mascot" id="mascotPengin">
+            <div class="mascot-mini-hearts">
+                <span class="mascot-mini-heart">💖</span>
+                <span class="mascot-mini-heart">💕</span>
+                <span class="mascot-mini-heart">❤️</span>
+            </div>
+            <div class="mini-pengin">
+                <div class="mini-pengin-body">
+                    <div class="mini-pengin-eye l"></div><div class="mini-pengin-eye r"></div>
+                    <div class="mini-pengin-bk"></div>
+                    <div class="mini-pengin-blush l"></div><div class="mini-pengin-blush r"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Create floating hearts background
+    <script>
+        // === BOOT SCREEN ===
         (function createBootHearts() {
             const container = document.getElementById('bootHearts');
             const hearts = ['❤️', '💕', '💖', '🩷', '🤍'];
@@ -398,43 +459,26 @@
             }
         })();
 
-        // Sumikko kiss animation
         function startSumikkoAnimation() {
             const shirokuma = document.getElementById('shirokuma');
             const pengin = document.getElementById('pengin');
-            const stage = document.getElementById('sumikkoStage');
-
-            // Start walking after 1s
             setTimeout(() => {
                 shirokuma.classList.add('walking');
-
-                // Calculate walk distance
                 const penginRect = pengin.getBoundingClientRect();
                 const shiroRect = shirokuma.getBoundingClientRect();
                 const distance = penginRect.left - shiroRect.left - shiroRect.width + 25;
-
                 shirokuma.style.transform = 'translateX(' + distance + 'px)';
-
-                // After walking (3.5s), trigger kiss
                 setTimeout(() => {
                     shirokuma.classList.remove('walking');
                     shirokuma.classList.add('kissing');
                     shirokuma.style.transform = 'translateX(' + (distance + 8) + 'px) rotate(6deg)';
-
-                    // Spawn kiss hearts
                     spawnKissHearts();
                     confetti({ particleCount: 120, spread: 70, origin: { y: 0.5 } });
-
-                    // Show valentine message
                     setTimeout(() => {
                         document.getElementById('vMsg').classList.add('show');
                         document.getElementById('vSub').classList.add('show');
                     }, 600);
-
-                    // Transition to page1
-                    setTimeout(() => {
-                        finishBoot();
-                    }, 3000);
+                    setTimeout(() => { finishBoot(); }, 3000);
                 }, 3500);
             }, 1200);
         }
@@ -445,7 +489,6 @@
             const shirokuma = document.getElementById('shirokuma');
             const rect = shirokuma.getBoundingClientRect();
             const stageRect = document.getElementById('sumikkoStage').getBoundingClientRect();
-
             for (let i = 0; i < 8; i++) {
                 setTimeout(() => {
                     const h = document.createElement('div');
@@ -468,12 +511,42 @@
                 bootScreen.style.display = 'none';
                 document.getElementById('page1').classList.add('active');
                 document.getElementById('heartBg').classList.add('active');
+                showMascots();
+                setMascotReaction('page1');
             }, 1500);
         }
 
         window.onload = () => { setTimeout(startSumikkoAnimation, 600); };
 
-        // === NAVIGATION LOGIC ===
+        // === MASCOT SYSTEM ===
+        const reactionClasses = ['mascot-bounce','mascot-shy','mascot-music','mascot-love','mascot-excited','mascot-emotional'];
+
+        function showMascots() { document.getElementById('mascots').classList.add('visible'); }
+        function hideMascots() { document.getElementById('mascots').classList.remove('visible'); }
+
+        function setMascotReaction(pageKey) {
+            const shiro = document.getElementById('mascotShiro');
+            const pengin = document.getElementById('mascotPengin');
+            reactionClasses.forEach(c => { shiro.classList.remove(c); pengin.classList.remove(c); });
+            switch(pageKey) {
+                case 'page1':
+                    shiro.classList.add('mascot-bounce'); pengin.classList.add('mascot-shy'); break;
+                case 'page2':
+                    shiro.classList.add('mascot-shy'); pengin.classList.add('mascot-shy'); break;
+                case 'concert':
+                    shiro.classList.add('mascot-music'); pengin.classList.add('mascot-music'); break;
+                case 'page3':
+                    shiro.classList.add('mascot-love'); pengin.classList.add('mascot-love'); break;
+                case 'letter':
+                    shiro.classList.add('mascot-emotional'); pengin.classList.add('mascot-emotional'); break;
+                case 'page4':
+                    shiro.classList.add('mascot-excited'); pengin.classList.add('mascot-excited'); break;
+            }
+        }
+
+        // === NAVIGATION ===
+        const pageReactionMap = { page1:'page1', page2:'page2', pageConcert:'concert', page3:'page3', pageLetter:'letter', page4:'page4' };
+
         function switchPage(fromId, toId) {
             const fromPage = document.getElementById(fromId);
             fromPage.classList.remove('active');
@@ -482,6 +555,7 @@
             toPage.classList.remove('hidden');
             toPage.classList.add('active');
             toPage.classList.add('fade-in');
+            if (pageReactionMap[toId]) setMascotReaction(pageReactionMap[toId]);
         }
 
         function createHearts() { const bg = document.getElementById('heartBg'); const symbols = ['❤️', '💖', '💕', '🥰', '🌹']; for(let i=0; i<30; i++) { const heart = document.createElement('div'); heart.className = 'heart-particle'; heart.innerText = symbols[Math.floor(Math.random() * symbols.length)]; heart.style.left = Math.random() * 100 + '%'; heart.style.animationDuration = (Math.random() * 5 + 5) + 's'; heart.style.animationDelay = Math.random() * 5 + 's'; bg.appendChild(heart); } }
@@ -493,6 +567,7 @@
             setTimeout(() => { switchPage('page1', 'page2'); }, 1000);
         }
 
+        // === CHAT ===
         let chatCount = 5; let chatHistory = [];
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
         async function sendMessage() {
@@ -504,18 +579,39 @@
                 setTimeout(() => {
                     document.getElementById('page2').classList.remove('active');
                     document.getElementById('page2').classList.add('hidden');
+                    hideMascots();
                     start3DWorld();
                 }, 1500);
             }
         }
         function addMessage(text, sender, isLoading = false) { const chatBox = document.getElementById('chat-box'); const div = document.createElement('div'); div.className = `msg msg-${sender}`; div.innerText = text; if(isLoading) div.id = 'loading-' + Date.now(); chatBox.appendChild(div); const clear = document.createElement('div'); clear.style.clear = 'both'; chatBox.appendChild(clear); chatBox.scrollTop = chatBox.scrollHeight; return div.id; }
 
+        // === LOVE LETTER ===
+        let envelopeOpened = false;
+        function openEnvelope() {
+            if (envelopeOpened) return;
+            envelopeOpened = true;
+            document.getElementById('envelope').classList.add('opened');
+            document.getElementById('letterHint').style.display = 'none';
+            setTimeout(() => {
+                document.getElementById('letterCard').classList.add('show');
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.4 }, colors: ['#ff4d79','#ffb3c6','#ff8fa3','#fff'] });
+            }, 1000);
+            setTimeout(() => {
+                document.getElementById('letterNextBtn').style.display = '';
+            }, 2500);
+        }
+
+        // === PAGE NAVIGATION ===
+        function goToLovePage() { switchPage('pageConcert', 'page3'); showMascots(); }
+        function goToLetter() { switchPage('page3', 'pageLetter'); }
+        function goToGifts() { switchPage('pageLetter', 'page4'); }
+
         // === 3D WORLD ===
         let scene, camera, renderer;
         let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
         let is3DActive = false;
         let walkingTime = 0; const bobSpeed = 8; const bobAmount = 0.05; const baseHeight = 1.6;
-        // Effect variables
         let heartParticles, heartVelocities = [];
         let sparkleMat, sparkleParticles;
         let petals3D = [];
@@ -531,306 +627,125 @@
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0xfff0f5);
             scene.fog = new THREE.FogExp2(0xfff0f5, 0.06);
-
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.set(0, baseHeight, 5);
-
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             document.getElementById('world-container').appendChild(renderer.domElement);
 
-            // --- Lighting ---
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-            scene.add(ambientLight);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambientLight);
+            pinkLight = new THREE.PointLight(0xff4d79, 0.8, 18); pinkLight.position.set(-3, 3.5, 2); scene.add(pinkLight);
+            purpleLight = new THREE.PointLight(0xb388ff, 0.6, 18); purpleLight.position.set(3, 3, -4); scene.add(purpleLight);
+            warmLight = new THREE.PointLight(0xffd1dc, 0.5, 25); warmLight.position.set(0, 4, -8); scene.add(warmLight);
 
-            pinkLight = new THREE.PointLight(0xff4d79, 0.8, 18);
-            pinkLight.position.set(-3, 3.5, 2);
-            scene.add(pinkLight);
-
-            purpleLight = new THREE.PointLight(0xb388ff, 0.6, 18);
-            purpleLight.position.set(3, 3, -4);
-            scene.add(purpleLight);
-
-            warmLight = new THREE.PointLight(0xffd1dc, 0.5, 25);
-            warmLight.position.set(0, 4, -8);
-            scene.add(warmLight);
-
-            // --- Floor ---
             const floorGeo = new THREE.PlaneGeometry(12, 50);
             const floorMat = new THREE.MeshStandardMaterial({ color: 0xffb3c6, roughness: 0.8 });
-            const floor = new THREE.Mesh(floorGeo, floorMat);
-            floor.rotation.x = -Math.PI / 2;
-            scene.add(floor);
+            const floor = new THREE.Mesh(floorGeo, floorMat); floor.rotation.x = -Math.PI / 2; scene.add(floor);
 
-            // --- Walls (subtle) ---
             const wallMat = new THREE.MeshStandardMaterial({ color: 0xffe8f0, roughness: 0.9, transparent: true, opacity: 0.3 });
             const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(50, 6), wallMat);
-            leftWall.position.set(-5, 3, -10); leftWall.rotation.y = Math.PI / 2;
-            scene.add(leftWall);
+            leftWall.position.set(-5, 3, -10); leftWall.rotation.y = Math.PI / 2; scene.add(leftWall);
             const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(50, 6), wallMat);
-            rightWall.position.set(5, 3, -10); rightWall.rotation.y = -Math.PI / 2;
-            scene.add(rightWall);
+            rightWall.position.set(5, 3, -10); rightWall.rotation.y = -Math.PI / 2; scene.add(rightWall);
 
-            // --- Photo frames with glow ---
             const textureLoader = new THREE.TextureLoader();
             function createFrame(imgPath, x, z, rotationY) {
                 textureLoader.load(imgPath, (texture) => {
                     const aspect = texture.image.width / texture.image.height;
                     const geo = new THREE.BoxGeometry(2, 2/aspect, 0.1);
                     const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.3 });
-                    const mesh = new THREE.Mesh(geo, mat);
-                    mesh.position.set(x, 1.6, z);
-                    mesh.rotation.y = rotationY;
-
-                    // White frame border
+                    const mesh = new THREE.Mesh(geo, mat); mesh.position.set(x, 1.6, z); mesh.rotation.y = rotationY;
                     const frameGeo = new THREE.BoxGeometry(2.2, (2/aspect)+0.2, 0.05);
                     const frameMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
-                    const frame = new THREE.Mesh(frameGeo, frameMat);
-                    frame.position.set(0, 0, -0.06);
-                    mesh.add(frame);
-
-                    // Glow behind frame
+                    const frame = new THREE.Mesh(frameGeo, frameMat); frame.position.set(0, 0, -0.06); mesh.add(frame);
                     const glowGeo = new THREE.PlaneGeometry(2.8, (2/aspect)+0.8);
-                    const glowMat = new THREE.MeshBasicMaterial({
-                        color: 0xff4d79, transparent: true, opacity: 0.12, side: THREE.DoubleSide
-                    });
-                    const glow = new THREE.Mesh(glowGeo, glowMat);
-                    glow.position.set(0, 0, -0.1);
-                    mesh.add(glow);
-
-                    // Sparkle point light near frame
-                    const frameLight = new THREE.PointLight(0xffb3c6, 0.4, 5);
-                    frameLight.position.set(0, 0, 0.5);
-                    mesh.add(frameLight);
-
+                    const glowMat = new THREE.MeshBasicMaterial({ color: 0xff4d79, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
+                    const glow = new THREE.Mesh(glowGeo, glowMat); glow.position.set(0, 0, -0.1); mesh.add(glow);
+                    const frameLight = new THREE.PointLight(0xffb3c6, 0.4, 5); frameLight.position.set(0, 0, 0.5); mesh.add(frameLight);
                     scene.add(mesh);
                 });
             }
-            createFrame('photo1.jpg', -2.5, 2, 0.5);
-            createFrame('photo2.jpg', 2.5, 0, -0.5);
-            createFrame('photo3.jpg', -2.5, -3, 0.5);
-            createFrame('photo4.jpg', 2.5, -6, -0.5);
+            createFrame('photo1.jpg', -2.5, 2, 0.5); createFrame('photo2.jpg', 2.5, 0, -0.5);
+            createFrame('photo3.jpg', -2.5, -3, 0.5); createFrame('photo4.jpg', 2.5, -6, -0.5);
 
-            // --- End wall (curtain) ---
             const endGeo = new THREE.BoxGeometry(8, 5, 0.1);
             const endMat = new THREE.MeshStandardMaterial({ color: 0xa00020 });
-            const endWall = new THREE.Mesh(endGeo, endMat);
-            endWall.position.set(0, 2.5, -10);
-            scene.add(endWall);
+            const endWall = new THREE.Mesh(endGeo, endMat); endWall.position.set(0, 2.5, -10); scene.add(endWall);
 
-            // === EFFECTS ===
-
-            // --- Heart particles ---
-            const heartCount = 40;
-            const heartGeo = new THREE.BufferGeometry();
-            const heartPositions = new Float32Array(heartCount * 3);
-            heartVelocities = [];
+            // Heart particles
+            const heartCount = 40; const heartGeo = new THREE.BufferGeometry();
+            const heartPositions = new Float32Array(heartCount * 3); heartVelocities = [];
             for (let i = 0; i < heartCount; i++) {
-                heartPositions[i * 3] = (Math.random() - 0.5) * 10;
-                heartPositions[i * 3 + 1] = Math.random() * 5;
-                heartPositions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 2;
-                heartVelocities.push({
-                    x: (Math.random() - 0.5) * 0.008,
-                    y: Math.random() * 0.008 + 0.004,
-                    z: (Math.random() - 0.5) * 0.005
-                });
+                heartPositions[i*3]=(Math.random()-0.5)*10; heartPositions[i*3+1]=Math.random()*5; heartPositions[i*3+2]=(Math.random()-0.5)*20-2;
+                heartVelocities.push({ x:(Math.random()-0.5)*0.008, y:Math.random()*0.008+0.004, z:(Math.random()-0.5)*0.005 });
             }
             heartGeo.setAttribute('position', new THREE.BufferAttribute(heartPositions, 3));
-
-            // Heart texture via canvas
-            const hCanvas = document.createElement('canvas');
-            hCanvas.width = 64; hCanvas.height = 64;
-            const hCtx = hCanvas.getContext('2d');
-            hCtx.fillStyle = '#ff4d79';
-            hCtx.beginPath();
-            const hx = 32, hy = 20;
-            hCtx.moveTo(hx, hy + 12);
-            hCtx.bezierCurveTo(hx, hy, hx - 18, hy, hx - 18, hy + 12);
-            hCtx.bezierCurveTo(hx - 18, hy + 26, hx, hy + 34, hx, hy + 40);
-            hCtx.bezierCurveTo(hx, hy + 34, hx + 18, hy + 26, hx + 18, hy + 12);
-            hCtx.bezierCurveTo(hx + 18, hy, hx, hy, hx, hy + 12);
-            hCtx.fill();
+            const hCanvas = document.createElement('canvas'); hCanvas.width=64; hCanvas.height=64;
+            const hCtx = hCanvas.getContext('2d'); hCtx.fillStyle='#ff4d79'; hCtx.beginPath();
+            const hx=32,hy=20; hCtx.moveTo(hx,hy+12); hCtx.bezierCurveTo(hx,hy,hx-18,hy,hx-18,hy+12);
+            hCtx.bezierCurveTo(hx-18,hy+26,hx,hy+34,hx,hy+40); hCtx.bezierCurveTo(hx,hy+34,hx+18,hy+26,hx+18,hy+12);
+            hCtx.bezierCurveTo(hx+18,hy,hx,hy,hx,hy+12); hCtx.fill();
             const heartTexture = new THREE.CanvasTexture(hCanvas);
+            const heartMat = new THREE.PointsMaterial({ size:0.35, map:heartTexture, transparent:true, opacity:0.7, depthWrite:false, blending:THREE.AdditiveBlending });
+            heartParticles = new THREE.Points(heartGeo, heartMat); scene.add(heartParticles);
 
-            const heartMat = new THREE.PointsMaterial({
-                size: 0.35,
-                map: heartTexture,
-                transparent: true,
-                opacity: 0.7,
-                depthWrite: false,
-                blending: THREE.AdditiveBlending
-            });
-            heartParticles = new THREE.Points(heartGeo, heartMat);
-            scene.add(heartParticles);
-
-            // --- Sparkle particles ---
-            const sparkleCount = 80;
-            const sparkleGeo = new THREE.BufferGeometry();
-            const sparklePositions = new Float32Array(sparkleCount * 3);
-            for (let i = 0; i < sparkleCount; i++) {
-                sparklePositions[i * 3] = (Math.random() - 0.5) * 12;
-                sparklePositions[i * 3 + 1] = Math.random() * 5 + 0.5;
-                sparklePositions[i * 3 + 2] = (Math.random() - 0.5) * 25 - 2;
-            }
+            // Sparkle particles
+            const sparkleCount=80; const sparkleGeo = new THREE.BufferGeometry();
+            const sparklePositions = new Float32Array(sparkleCount*3);
+            for(let i=0;i<sparkleCount;i++){ sparklePositions[i*3]=(Math.random()-0.5)*12; sparklePositions[i*3+1]=Math.random()*5+0.5; sparklePositions[i*3+2]=(Math.random()-0.5)*25-2; }
             sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparklePositions, 3));
-            sparkleMat = new THREE.PointsMaterial({
-                size: 0.08,
-                color: 0xffffff,
-                transparent: true,
-                opacity: 0.8,
-                depthWrite: false,
-                blending: THREE.AdditiveBlending
-            });
-            sparkleParticles = new THREE.Points(sparkleGeo, sparkleMat);
-            scene.add(sparkleParticles);
+            sparkleMat = new THREE.PointsMaterial({ size:0.08, color:0xffffff, transparent:true, opacity:0.8, depthWrite:false, blending:THREE.AdditiveBlending });
+            sparkleParticles = new THREE.Points(sparkleGeo, sparkleMat); scene.add(sparkleParticles);
 
-            // --- Petal rain ---
-            const petalCount = 25;
-            petals3D = [];
-            const petalGeo = new THREE.PlaneGeometry(0.12, 0.08);
-            for (let i = 0; i < petalCount; i++) {
-                const petalMat = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color().setHSL(0.95 + Math.random() * 0.05, 0.6, 0.8),
-                    transparent: true,
-                    opacity: 0.5 + Math.random() * 0.2,
-                    side: THREE.DoubleSide
-                });
+            // Petal rain
+            petals3D = []; const petalGeo = new THREE.PlaneGeometry(0.12, 0.08);
+            for(let i=0;i<25;i++){
+                const petalMat = new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL(0.95+Math.random()*0.05,0.6,0.8), transparent:true, opacity:0.5+Math.random()*0.2, side:THREE.DoubleSide });
                 const petal = new THREE.Mesh(petalGeo, petalMat);
-                petal.position.set(
-                    (Math.random() - 0.5) * 10,
-                    Math.random() * 5 + 3,
-                    (Math.random() - 0.5) * 20 - 2
-                );
-                petal.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-                petal.userData = {
-                    fallSpeed: Math.random() * 0.008 + 0.004,
-                    swaySpeed: Math.random() * 0.015 + 0.008,
-                    swayAmp: Math.random() * 0.4 + 0.2,
-                    rotSpeed: Math.random() * 0.015 + 0.008,
-                    initX: petal.position.x
-                };
-                scene.add(petal);
-                petals3D.push(petal);
+                petal.position.set((Math.random()-0.5)*10, Math.random()*5+3, (Math.random()-0.5)*20-2);
+                petal.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+                petal.userData = { fallSpeed:Math.random()*0.008+0.004, swaySpeed:Math.random()*0.015+0.008, swayAmp:Math.random()*0.4+0.2, rotSpeed:Math.random()*0.015+0.008, initX:petal.position.x };
+                scene.add(petal); petals3D.push(petal);
             }
 
-            // --- Controls ---
-            document.addEventListener('keydown', (e) => {
-                switch(e.code) {
-                    case 'ArrowUp': case 'KeyW': moveForward = true; break;
-                    case 'ArrowDown': case 'KeyS': moveBackward = true; break;
-                    case 'ArrowLeft': case 'KeyA': moveLeft = true; break;
-                    case 'ArrowRight': case 'KeyD': moveRight = true; break;
-                }
-            });
-            document.addEventListener('keyup', (e) => {
-                switch(e.code) {
-                    case 'ArrowUp': case 'KeyW': moveForward = false; break;
-                    case 'ArrowDown': case 'KeyS': moveBackward = false; break;
-                    case 'ArrowLeft': case 'KeyA': moveLeft = false; break;
-                    case 'ArrowRight': case 'KeyD': moveRight = false; break;
-                }
-            });
-
-            const btnUp = document.getElementById('btnUp');
-            const btnDown = document.getElementById('btnDown');
-            const btnLeft = document.getElementById('btnLeft');
-            const btnRight = document.getElementById('btnRight');
-            const handleTouch = (btn, dir, val) => {
-                btn.addEventListener('touchstart', (e) => { e.preventDefault(); dir = true; });
-                btn.addEventListener('touchend', (e) => { e.preventDefault(); dir = false; });
-                if(btn.id === 'btnUp') { btn.addEventListener('touchstart', ()=>moveForward=true); btn.addEventListener('touchend', ()=>moveForward=false); }
-                if(btn.id === 'btnDown') { btn.addEventListener('touchstart', ()=>moveBackward=true); btn.addEventListener('touchend', ()=>moveBackward=false); }
-                if(btn.id === 'btnLeft') { btn.addEventListener('touchstart', ()=>moveLeft=true); btn.addEventListener('touchend', ()=>moveLeft=false); }
-                if(btn.id === 'btnRight') { btn.addEventListener('touchstart', ()=>moveRight=true); btn.addEventListener('touchend', ()=>moveRight=false); }
-            };
+            // Controls
+            document.addEventListener('keydown', (e) => { switch(e.code){ case 'ArrowUp': case 'KeyW': moveForward=true; break; case 'ArrowDown': case 'KeyS': moveBackward=true; break; case 'ArrowLeft': case 'KeyA': moveLeft=true; break; case 'ArrowRight': case 'KeyD': moveRight=true; break; } });
+            document.addEventListener('keyup', (e) => { switch(e.code){ case 'ArrowUp': case 'KeyW': moveForward=false; break; case 'ArrowDown': case 'KeyS': moveBackward=false; break; case 'ArrowLeft': case 'KeyA': moveLeft=false; break; case 'ArrowRight': case 'KeyD': moveRight=false; break; } });
+            const btnUp=document.getElementById('btnUp'),btnDown=document.getElementById('btnDown'),btnLeft=document.getElementById('btnLeft'),btnRight=document.getElementById('btnRight');
+            const handleTouch = (btn) => { if(btn.id==='btnUp'){btn.addEventListener('touchstart',(e)=>{e.preventDefault();moveForward=true});btn.addEventListener('touchend',(e)=>{e.preventDefault();moveForward=false})} if(btn.id==='btnDown'){btn.addEventListener('touchstart',(e)=>{e.preventDefault();moveBackward=true});btn.addEventListener('touchend',(e)=>{e.preventDefault();moveBackward=false})} if(btn.id==='btnLeft'){btn.addEventListener('touchstart',(e)=>{e.preventDefault();moveLeft=true});btn.addEventListener('touchend',(e)=>{e.preventDefault();moveLeft=false})} if(btn.id==='btnRight'){btn.addEventListener('touchstart',(e)=>{e.preventDefault();moveRight=true});btn.addEventListener('touchend',(e)=>{e.preventDefault();moveRight=false})} };
             handleTouch(btnUp); handleTouch(btnDown); handleTouch(btnLeft); handleTouch(btnRight);
             animate3D();
         }
 
         function animate3D() {
-            if (!is3DActive) return;
-            requestAnimationFrame(animate3D);
-            effectTime += 0.016;
+            if (!is3DActive) return; requestAnimationFrame(animate3D); effectTime += 0.016;
+            const speed=0.1, rotSpeed=0.03; let isMoving=false;
+            if(moveForward){camera.translateZ(-speed);isMoving=true;} if(moveBackward){camera.translateZ(speed);isMoving=true;}
+            if(moveLeft) camera.rotateY(rotSpeed); if(moveRight) camera.rotateY(-rotSpeed);
+            if(isMoving){walkingTime+=0.05;camera.position.y=baseHeight+Math.sin(walkingTime*bobSpeed)*bobAmount;} else {camera.position.y=THREE.MathUtils.lerp(camera.position.y,baseHeight,0.1);}
 
-            const speed = 0.1; const rotSpeed = 0.03; let isMoving = false;
-            if (moveForward) { camera.translateZ(-speed); isMoving = true; }
-            if (moveBackward) { camera.translateZ(speed); isMoving = true; }
-            if (moveLeft) camera.rotateY(rotSpeed);
-            if (moveRight) camera.rotateY(-rotSpeed);
+            if(heartParticles){const hPos=heartParticles.geometry.attributes.position;for(let i=0;i<heartVelocities.length;i++){hPos.array[i*3]+=heartVelocities[i].x+Math.sin(effectTime+i)*0.002;hPos.array[i*3+1]+=heartVelocities[i].y;hPos.array[i*3+2]+=heartVelocities[i].z;if(hPos.array[i*3+1]>6){hPos.array[i*3+1]=-0.5;hPos.array[i*3]=(Math.random()-0.5)*10;hPos.array[i*3+2]=camera.position.z+(Math.random()-0.5)*10;}}hPos.needsUpdate=true;}
+            if(sparkleMat){sparkleMat.opacity=0.3+Math.sin(effectTime*4)*0.3+Math.sin(effectTime*7)*0.15;}
+            petals3D.forEach(p=>{p.position.y-=p.userData.fallSpeed;p.position.x=p.userData.initX+Math.sin(effectTime*p.userData.swaySpeed*60)*p.userData.swayAmp;p.rotation.x+=p.userData.rotSpeed;p.rotation.z+=p.userData.rotSpeed*0.7;if(p.position.y<-0.5){p.position.y=5+Math.random()*2;p.position.z=camera.position.z+(Math.random()-0.5)*10;p.userData.initX=(Math.random()-0.5)*10;}});
+            if(pinkLight) pinkLight.intensity=0.6+Math.sin(effectTime*2)*0.25;
+            if(purpleLight) purpleLight.intensity=0.4+Math.cos(effectTime*1.5)*0.25;
 
-            if (isMoving) {
-                walkingTime += 0.05;
-                camera.position.y = baseHeight + Math.sin(walkingTime * bobSpeed) * bobAmount;
-            } else {
-                camera.position.y = THREE.MathUtils.lerp(camera.position.y, baseHeight, 0.1);
-            }
-
-            // --- Animate heart particles ---
-            if (heartParticles) {
-                const hPos = heartParticles.geometry.attributes.position;
-                for (let i = 0; i < heartVelocities.length; i++) {
-                    hPos.array[i * 3] += heartVelocities[i].x + Math.sin(effectTime + i) * 0.002;
-                    hPos.array[i * 3 + 1] += heartVelocities[i].y;
-                    hPos.array[i * 3 + 2] += heartVelocities[i].z;
-                    if (hPos.array[i * 3 + 1] > 6) {
-                        hPos.array[i * 3 + 1] = -0.5;
-                        hPos.array[i * 3] = (Math.random() - 0.5) * 10;
-                        hPos.array[i * 3 + 2] = camera.position.z + (Math.random() - 0.5) * 10;
-                    }
-                }
-                hPos.needsUpdate = true;
-            }
-
-            // --- Animate sparkle twinkle ---
-            if (sparkleMat) {
-                sparkleMat.opacity = 0.3 + Math.sin(effectTime * 4) * 0.3 + Math.sin(effectTime * 7) * 0.15;
-            }
-
-            // --- Animate petals ---
-            petals3D.forEach(petal => {
-                petal.position.y -= petal.userData.fallSpeed;
-                petal.position.x = petal.userData.initX + Math.sin(effectTime * petal.userData.swaySpeed * 60) * petal.userData.swayAmp;
-                petal.rotation.x += petal.userData.rotSpeed;
-                petal.rotation.z += petal.userData.rotSpeed * 0.7;
-                if (petal.position.y < -0.5) {
-                    petal.position.y = 5 + Math.random() * 2;
-                    petal.position.z = camera.position.z + (Math.random() - 0.5) * 10;
-                    petal.userData.initX = (Math.random() - 0.5) * 10;
-                }
-            });
-
-            // --- Animate lights ---
-            if (pinkLight) pinkLight.intensity = 0.6 + Math.sin(effectTime * 2) * 0.25;
-            if (purpleLight) purpleLight.intensity = 0.4 + Math.cos(effectTime * 1.5) * 0.25;
-
-            // --- Check end zone ---
-            if (camera.position.z < -8) {
-                is3DActive = false;
-                document.getElementById('world-container').style.display = 'none';
-                document.getElementById('joystick-ui').style.display = 'none';
-                document.getElementById('instruction-text').style.display = 'none';
-
-                const concertPage = document.getElementById('pageConcert');
-                concertPage.classList.remove('hidden');
-                concertPage.classList.add('active');
-                concertPage.classList.add('fade-in');
-
-                setTimeout(() => { document.getElementById('curtains').classList.add('curtain-open'); }, 500);
+            if(camera.position.z < -8){
+                is3DActive=false;
+                document.getElementById('world-container').style.display='none';
+                document.getElementById('joystick-ui').style.display='none';
+                document.getElementById('instruction-text').style.display='none';
+                const concertPage=document.getElementById('pageConcert');
+                concertPage.classList.remove('hidden'); concertPage.classList.add('active'); concertPage.classList.add('fade-in');
+                showMascots(); setMascotReaction('concert');
+                setTimeout(()=>{document.getElementById('curtains').classList.add('curtain-open');},500);
             }
             renderer.render(scene, camera);
         }
 
-        window.addEventListener('resize', () => {
-            if(camera && renderer) {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            }
-        });
+        window.addEventListener('resize', () => { if(camera&&renderer){camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);} });
 
-        function goToLovePage() { switchPage('pageConcert', 'page3'); }
-        function goToGifts() { switchPage('page3', 'page4'); }
         let finalPrize = "";
         function openGift(element) { if(finalPrize !== "") return; element.classList.add('shaking'); setTimeout(() => { element.classList.remove('shaking'); const prizes = ['หมูกระทะ 🐷', 'ชาบู 🍲', 'อาหารญี่ปุ่น 🍣', 'MK สุกี้ 🍲', 'BBQ Plaza 🐲']; finalPrize = prizes[Math.floor(Math.random() * prizes.length)]; document.querySelector('.gift-container').style.display = 'none'; document.getElementById('giftSubtitle').style.display = 'none'; document.getElementById('giftTitle').innerText = "ยินดีด้วย! คุณได้รับ..."; const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }); document.getElementById('voucherPrizeResult').innerText = finalPrize; document.getElementById('voucherDate').innerText = today; document.getElementById('voucherCard').classList.remove('hidden'); confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }, 800); }
         function shareToLine() { const shareText = `💖 Voucher Alert! 💖\n\nคุณโอเกะจับฉลากได้กิน "${finalPrize}"\n\nปาร์คกี้ต้องพาไปกินภายในวันนี้ ห้ามเบี้ยว!\n\n(จาก Valentines App)`; const encodedText = encodeURIComponent(shareText); const lineUrl = `https://line.me/R/msg/text/?${encodedText}`; window.open(lineUrl, '_blank'); }
